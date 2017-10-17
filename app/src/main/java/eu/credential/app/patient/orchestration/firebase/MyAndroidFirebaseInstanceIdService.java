@@ -7,6 +7,13 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import eu.credential.app.patient.orchestration.http.Request;
 
+/**
+ * Created by Aleksei Piatkin on 27.05.17.
+ * <p>
+ * This class get app id (token) only by a first install (or reinstall on a new device)
+ * and send it to server.
+ */
+
 public class MyAndroidFirebaseInstanceIdService extends FirebaseInstanceIdService {
 
     private static final String TAG = "MyAndroidFCMIIDService";

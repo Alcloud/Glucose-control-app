@@ -33,7 +33,7 @@ public class DoctorDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_doctor_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_doctor_details);
 
-        toolbar.setTitle(ParticipantListFragment.name);
+        toolbar.setTitle(ParticipantListFragment.name + " " + ParticipantListFragment.surname);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_arrow_back);
         toolbar.setNavigationOnClickListener(v -> finish());

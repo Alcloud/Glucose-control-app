@@ -3,6 +3,7 @@ package eu.credential.app.patient.orchestration.http;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -39,13 +40,14 @@ public class Request extends AsyncTask<String, Void, Void> {
     }
 
     private Context context;
-
+    private ProgressDialog dialog;
     private static final String GET_PREFERENCE_URL =
             "http://194.95.174.238:8083/v1/notificationManagementService/getPreferences";
 
     public Request(String addressURL, String accountId, String id,
                    String dataId, String requestId, Context context) {
         super();
+        dialog = new ProgressDialog(context);
         this.addressURL = addressURL;
         this.accountId = accountId;
         this.id = id;
@@ -56,12 +58,17 @@ public class Request extends AsyncTask<String, Void, Void> {
 
     public Request(String addressURL, String id, String requestId, Context context) {
         super();
+        dialog = new ProgressDialog(context);
         this.addressURL = addressURL;
         this.id = id;
         this.requestId = requestId;
         this.context = context;
     }
-
+    @Override
+    protected void onPreExecute() {
+        dialog.setMessage("Doing something, please wait.");
+        dialog.show();
+    }
     @Override
     protected Void doInBackground(String... params) {
         JSONObject requestMessage = null;
@@ -190,7 +197,12 @@ public class Request extends AsyncTask<String, Void, Void> {
         }
         return null;
     }
-
+    protected void onPostExecute(Void result) {
+        // do UI work here
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
     // Convert JSON object to String format
     private String jsonToString(HttpURLConnection httpURLConnection) throws IOException {
 

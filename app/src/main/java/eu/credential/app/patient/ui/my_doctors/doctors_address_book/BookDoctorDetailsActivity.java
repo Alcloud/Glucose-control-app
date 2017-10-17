@@ -21,8 +21,15 @@ import java.util.concurrent.ExecutionException;
 import eu.credential.app.patient.orchestration.http.GetParticipantData;
 import eu.credential.app.patient.orchestration.http.UpdateParticipantData;
 import eu.credential.app.patient.ui.my_doctors.doctors_address_book.dialog_fragments.AskToAccessTypeDialog;
+import eu.credential.app.patient.ui.my_doctors.doctors_address_book.dialog_fragments.AskToChangeFragment;
 import eu.credential.app.patient.ui.my_doctors.doctors_address_book.dialog_fragments.AskToDeleteParticipantDialog;
-import eu.credential.app.patient.ui.searchParticipant.ParticipantListFragment;
+
+/**
+ * Created by Aleksei Piatkin on 26.06.17.
+ * <p>
+ * This activity shows the doctor's data in details.
+ * The user can set or delete the doctor and his role from address book right from this activity.
+ */
 
 public class BookDoctorDetailsActivity extends AppCompatActivity {
 
@@ -40,7 +47,7 @@ public class BookDoctorDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_book_doctor_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_doctor_details);
 
-        toolbar.setTitle(ParticipantListFragment.name + " " + ParticipantListFragment.surname);
+        toolbar.setTitle(AddressBookFragment.name + " " + AddressBookFragment.surname);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_arrow_back);
         toolbar.setNavigationOnClickListener(v -> finish());
@@ -61,9 +68,11 @@ public class BookDoctorDetailsActivity extends AppCompatActivity {
         doctorDescription.setText("Doctor " + AddressBookFragment.name + " " +
                 AddressBookFragment.surname + " is a " + AddressBookFragment.role + " from " +
                 AddressBookFragment.city + ". If you want to set Dr. " + AddressBookFragment.name +
-                " as " + AddressBookFragment.role + ", just push an Add button below.");
+                " " + AddressBookFragment.surname + " as " + AddressBookMainFragment.role +
+                ", just push an Add button below.");
     }
 
+    // add a doctor to address book
     public void onClickAdd(View view) throws IOException {
 
         if (AddressBookMainFragment.role.equals(getString(R.string.diabetologist))) {
@@ -73,8 +82,10 @@ public class BookDoctorDetailsActivity extends AppCompatActivity {
             addRole(getString(R.string.family_doctor), doctorName.getText().toString(),
                     doctorSurname.getText().toString(), doctorRole.getText().toString(), doctorCity.getText().toString());
         }
+        finish();
     }
 
+    // delete a doctor or his role from address book
     public void onClickDelete(View view) {
         AskToDeleteParticipantDialog myDialogFragment = new AskToDeleteParticipantDialog();
         FragmentManager manager = getSupportFragmentManager();
@@ -90,6 +101,7 @@ public class BookDoctorDetailsActivity extends AppCompatActivity {
         myDialogFragment.show(transaction, "dialog");
     }
 
+    // set a special access for doctor
     public void onClickAccess(View view) {
 
         AskToAccessTypeDialog myDialogFragment = new AskToAccessTypeDialog();
@@ -103,6 +115,7 @@ public class BookDoctorDetailsActivity extends AppCompatActivity {
         myDialogFragment.show(transaction, "dialog");
     }
 
+    // method to set a doctor as "role"
     private void setDoctor(String name, String surname, String role, String city, String mainRole) {
 
         if (AddressBookMainFragment.name.equals("") || AddressBookMainFragment.name.equals("not registered")) {
@@ -168,6 +181,7 @@ public class BookDoctorDetailsActivity extends AppCompatActivity {
         }
     }
 
+    // method to add a new role to doctor and check if he has this role already
     private void addRole(String role, String name, String surname, String mainRole, String city) {
         if (AddressBookMainFragment.role.equals(role)) {
             if (AddressBookMainFragment.name.equals(name) && AddressBookMainFragment.surname.equals(surname)) {

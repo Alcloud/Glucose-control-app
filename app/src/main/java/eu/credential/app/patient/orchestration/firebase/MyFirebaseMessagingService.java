@@ -1,7 +1,10 @@
 package eu.credential.app.patient.orchestration.firebase;
 
-/*
-  Created by Aleksei Piatkin on 24.03.2017.
+/**
+ * Created by Aleksei Piatkin on 27.05.17.
+ * <p>
+ * This class get a notification data from firebase cloud, manage it and send to notification
+ * service to get a specific text message for an user.
  */
 
 import android.app.NotificationManager;
@@ -49,7 +52,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        //sendNotification(remoteMessage.getNotification().getBody());
         String accountId = "";
         String notificationId = "";
 

@@ -22,13 +22,13 @@ import eu.credential.app.patient.orchestration.http.UpdateParticipantData;
 import eu.credential.app.patient.ui.my_doctors.MyDoctorsFragment;
 
 /**
- * Created by Aleksei Piatkin on 02.07.17.
+ * Created by Aleksei Piatkin on 13.10.17.
  * <p>
- * This class shows a dialog fragment to ask user if he really wants to delete doctor from address book.
+ * This class shows a dialog fragment to ask user if he really wants to delete doctor's role.
  * Three buttons: Yes, No.
  */
 
-public class AskToDeleteParticipantDialog extends DialogFragment {
+public class AskToDeleteRoleDialog extends DialogFragment {
 
     private String accountId = "HansAugust";
 
@@ -39,10 +39,11 @@ public class AskToDeleteParticipantDialog extends DialogFragment {
         //Data from AddressBookFragment for new person
         String name = this.getArguments().getString("name");
         String surname = this.getArguments().getString("surname");
+        String role = this.getArguments().getString("role");
         int activity = this.getArguments().getInt("activity");
 
-        String title = "Delete " + name + " " + surname + ".";
-        String message = "Do you want to delete doctor " + name + " " + surname + " from address book?";
+        String title = "Delete doctor's " + name + " " + surname  + role + " role.";
+        String message = "Do you want to delete doctor's " + name + " " + surname + role + " role?";
 
         String button1String = "Yes";
         String button2String = "No";
@@ -52,28 +53,11 @@ public class AskToDeleteParticipantDialog extends DialogFragment {
                 .setMessage(message)
                 .setIcon(R.drawable.doctor);
         builder.setPositiveButton(button1String, (dialog, id) -> {
-            GetParticipantData getParticipantData = new GetParticipantData(accountId);
-            JSONArray doctorArray = null;
-            try {
-                doctorArray = getParticipantData.execute().get();
-                for (int i = 0; i < doctorArray.length(); i++) {
-                    // TODO: Change "surname" to "id", when doctors will be get from LDAP
-                    if (doctorArray.getJSONObject(i).getString("surname").equals(surname) &&
-                            doctorArray.getJSONObject(i).getString("name").equals(name)) {
-                        doctorArray.remove(i);
-                    }
-                }
-            } catch (InterruptedException | ExecutionException | JSONException e) {
-                e.printStackTrace();
+            if(role != null && role.equals("diabetologist")){
+                changeDoctorRole(name, surname, 0, activity, "null");
             }
-            // delete doctor's role and save to address book
-            UpdateParticipantData updateParticipantData = new UpdateParticipantData
-                    (doctorArray, accountId, "delete");
-            updateParticipantData.execute();
-            Toast.makeText(getActivity().getApplicationContext(), "Doctor " +
-                    name + " " + surname + " was removed from address book", Toast.LENGTH_SHORT).show();
-            if (activity != 1) {
-                changeFragment(new MyDoctorsFragment());
+            if(role != null && role.equals("family doctor")){
+                changeDoctorRole(name, surname, 1, activity, "null");
             }
         });
         builder.setNegativeButton(button2String, (dialog, id) -> {
@@ -88,5 +72,29 @@ public class AskToDeleteParticipantDialog extends DialogFragment {
         fragmentTransaction.replace(R.id.container, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+    private void changeDoctorRole(String name, String surname, int position, int activity, String roleName) {
+        GetParticipantData getParticipantData = new GetParticipantData(accountId);
+        try {
+            JSONArray doctorArray = getParticipantData.execute().get();
+            for (int j = 0; j < doctorArray.length(); j++) {
+                // TODO: Change "surname" to "id", when doctors will be get from LDAP
+                if (doctorArray.getJSONObject(j).getString("surname").equals(surname) &&
+                        doctorArray.getJSONObject(j).getString("name").equals(name)) {
+                    doctorArray.getJSONObject(j).getJSONArray("role").put(position, roleName);
+                }
+            }
+            UpdateParticipantData updateParticipantData = new UpdateParticipantData
+                    (doctorArray, accountId, "delete");
+            updateParticipantData.execute();
+            changeFragment(new MyDoctorsFragment());
+        } catch (InterruptedException | ExecutionException | JSONException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(getActivity().getApplicationContext(), "Doctor's " +
+                name + " " + surname + " role was deleted.", Toast.LENGTH_SHORT).show();
+        if (activity != 1) {
+            changeFragment(new MyDoctorsFragment());
+        }
     }
 }

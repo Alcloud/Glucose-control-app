@@ -16,6 +16,13 @@ import java.util.concurrent.ExecutionException;
 
 import eu.credential.app.patient.orchestration.http.GetParticipantData;
 
+/**
+ * Created by Aleksei Piatkin on 26.06.17.
+ * <p>
+ * This fragment shows user address book.
+ * The user can set or delete the doctor and his role from address book right from this fragment.
+ */
+
 public class AddressBookMainFragment extends Fragment {
 
     public static String role;
@@ -27,12 +34,12 @@ public class AddressBookMainFragment extends Fragment {
 
     String doctorName;
     String doctorSurname;
-    String doctorRole;
     String doctorMainRole;
     String doctorCity;
 
-    static ArrayList<Doctor> listDoctor = new ArrayList<>();
+    public static ArrayList<Doctor> listDoctor = new ArrayList<>();
 
+    // get actual list of doctors in address book
     public void refreshList() {
         listDoctor.clear();
         GetParticipantData getParticipantData = new GetParticipantData(accountId);
@@ -41,12 +48,14 @@ public class AddressBookMainFragment extends Fragment {
             doctorArray = getParticipantData.execute().get();
 
             for (int i = 0; i < doctorArray.length(); i++) {
+                String [] doctorRole = new String[2];
                 Doctor doctor = new Doctor();
                 doctorName = doctorArray.getJSONObject(i).getString("name");
                 doctorSurname = doctorArray.getJSONObject(i).getString("surname");
                 doctorCity = doctorArray.getJSONObject(i).getString("city");
                 doctorMainRole = doctorArray.getJSONObject(i).getString("mainrole");
-                doctorRole = doctorArray.getJSONObject(i).getString("role");
+                doctorRole [0] = (String) doctorArray.getJSONObject(i).getJSONArray("role").get(0);
+                doctorRole [1] = (String) doctorArray.getJSONObject(i).getJSONArray("role").get(1);
 
                 doctor.setName(doctorName);
                 doctor.setSurname(doctorSurname);

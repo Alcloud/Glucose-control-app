@@ -1,5 +1,6 @@
 package eu.credential.app.patient.orchestration.http;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -25,6 +26,7 @@ public class UpdateParticipantData extends AsyncTask<String, Void, Void> {
     private String accountId;
     private String operationId = "";
     JSONArray array;
+    private ProgressDialog dialog;
 
     private static final String GET_PARTICIPANT_URL = "http://194.95.174.238:8081/dms/data/";
 
@@ -46,6 +48,12 @@ public class UpdateParticipantData extends AsyncTask<String, Void, Void> {
         this.array = array;
         this.accountId = accountId;
         this.operationId = operationId;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        dialog.setMessage("Doing something, please wait.");
+        dialog.show();
     }
 
     @Override
@@ -127,18 +135,10 @@ public class UpdateParticipantData extends AsyncTask<String, Void, Void> {
         }
         return null;
     }
-
-    // Convert JSON object to String format
-    private String jsonToString(HttpURLConnection httpURLConnection) throws IOException {
-
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(httpURLConnection.getInputStream()));
-        StringBuilder sb = new StringBuilder(1024);
-        String tmp;
-        while ((tmp = reader.readLine()) != null)
-            sb.append(tmp).append("\n");
-        reader.close();
-        Log.d("Update participant", sb.toString());
-        return sb.toString();
+    protected void onPostExecute(Void result) {
+        // do UI work here
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 }

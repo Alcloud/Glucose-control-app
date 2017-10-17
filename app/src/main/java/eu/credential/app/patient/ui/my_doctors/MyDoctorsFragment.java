@@ -23,6 +23,13 @@ import java.util.concurrent.ExecutionException;
 import eu.credential.app.patient.orchestration.http.GetParticipantData;
 import eu.credential.app.patient.ui.my_doctors.doctors_address_book.AddressBookMainFragment;
 
+/**
+ * Created by Aleksei Piatkin on 15.06.17.
+ * <p>
+ * This fragment show two main doctors with defined role.
+ * The user can open address book from this fragment.
+ */
+
 public class MyDoctorsFragment extends Fragment {
     ImageButton addressBookDiabetologist;
     ImageButton addressBookFamily;
@@ -72,37 +79,33 @@ public class MyDoctorsFragment extends Fragment {
                 String doctorSurname = doctorArray.getJSONObject(i).getString("surname");
                 String doctorCity = doctorArray.getJSONObject(i).getString("city");
                 String doctorMainRole = doctorArray.getJSONObject(i).getString("mainrole");
-                String doctorRole = doctorArray.getJSONObject(i).getString("role");
 
-                if (doctorRole.equals(getString(R.string.family_doctor))) {
+                if (doctorArray.getJSONObject(i).getJSONArray("role").get(1).equals(getString(R.string.family_doctor))) {
                     setText(textViewNameFamily, doctorName);
                     setText(textViewSurnameFamily, doctorSurname);
                     setText(textViewRoleFamily, doctorMainRole);
                     setText(textViewCityFamily, doctorCity);
 
                 }
-                if (doctorRole.equals(getString(R.string.diabetologist))) {
+                if (doctorArray.getJSONObject(i).getJSONArray("role").get(0).equals(getString(R.string.diabetologist))) {
                     setText(textViewNameDiabetologist, doctorName);
                     setText(textViewSurnameDiabetologist, doctorSurname);
                     setText(textViewRoleDiabetologist, doctorMainRole);
                     setText(textViewCityDiabetologist, doctorCity);
                 }
             }
-        } catch ( InterruptedException | ExecutionException | JSONException e) {
+        } catch (InterruptedException | ExecutionException | JSONException e) {
             e.printStackTrace();
         }
 
         addressBookDiabetologist = (ImageButton) v.findViewById(R.id.imageView_address_book_diabetologist);
         addressBookFamily = (ImageButton) v.findViewById(R.id.imageView_address_book_family);
-        addressBookDiabetologist.setOnClickListener(v1 -> {
-            changeFragmentToAddressBookMainFragment(getString(R.string.diabetologist), textViewNameDiabetologist,
-                    textViewSurnameDiabetologist, textViewRoleDiabetologist, textViewCityDiabetologist);
-
-        });
-        addressBookFamily.setOnClickListener(v12 -> {
-            changeFragmentToAddressBookMainFragment(getString(R.string.family_doctor), textViewNameFamily,
-                    textViewSurnameFamily, textViewRoleFamily, textViewCityFamily);
-        });
+        addressBookDiabetologist.setOnClickListener(v1 ->
+                changeFragmentToAddressBookMainFragment(getString(R.string.diabetologist), textViewNameDiabetologist,
+                        textViewSurnameDiabetologist, textViewRoleDiabetologist, textViewCityDiabetologist));
+        addressBookFamily.setOnClickListener(v12 -> changeFragmentToAddressBookMainFragment
+                (getString(R.string.family_doctor), textViewNameFamily,
+                textViewSurnameFamily, textViewRoleFamily, textViewCityFamily));
         return v;
     }
 
