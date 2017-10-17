@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "57266965053",
+    "firebase_url": "https://patient-app-2c543.firebaseio.com",
+    "project_id": "patient-app-2c543",
+    "storage_bucket": "patient-app-2c543.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57266965053:android:3e983cdaf5d75ed1",
+        "android_client_info": {
+          "package_name": "eu.credential.app.patient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "57266965053-p7du8bmgp9lk4a1fq4o31m8ibinj2b0f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eu.credential.app.patient",
+            "certificate_hash": "6b13bb7e3954e1f7eb71a3ad26a304d49dab8ddb"
+          }
+        },
+        {
+          "client_id": "57266965053-cim8f7coui23ekeas6ua76mnl19mtdcc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWjxgVWkrrk0pg_JLD6OHDWcgPJ4JykX8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "57266965053-cim8f7coui23ekeas6ua76mnl19mtdcc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

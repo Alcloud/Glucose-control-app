@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/activity_scan"
+android:background="@color/colorBackground"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="eu.credential.app.patient.ui.ScanFragment">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageButton
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:gravity="center"
+        app:srcCompat="@drawable/scan"
+        android:background="@color/colorBackground"
+        android:scaleType="fitCenter"
+        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"
+        android:id="@+id/scan_button" />
+    <TextView
+        android:id="@+id/scan_format"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/scan_button" />
+    <TextView
+        android:id="@+id/scan_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/scan_format" />
+
+</RelativeLayout>
+</RelativeLayout>

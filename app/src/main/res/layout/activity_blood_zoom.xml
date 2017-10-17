@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:background="@color/colorBackground"
+android:layout_height="match_parent"
+android:layout_width="match_parent"
+android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_blood"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+<LinearLayout
+    android:layout_height="43dp"
+    android:layout_width="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="horizontal">
+
+    <TextView
+        android:text="@string/zoomTextView"
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimary"
+        style="@style/AppTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/zoomWeightText" />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0.6"
+        android:spinnerMode="dialog"
+        android:id="@+id/spinner_period_blood"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        android:background="@color/colorBackground"
+        app:srcCompat="@drawable/share"
+        android:id="@+id/share_blood"
+        android:onClick="onClickShare"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"/>
+
+</LinearLayout>
+
+<com.androidplot.xy.XYPlot
+    style="@style/APDefacto"
+    android:id="@+id/plotZoomBlood"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="0.5"
+    app:lineLabels="left|bottom"
+    app:lineLabelRotationBottom="-45"/>
+</LinearLayout>

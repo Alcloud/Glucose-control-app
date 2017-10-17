@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_health_records"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/my_health_record" />
+        <item
+            android:id="@+id/nav_doctors"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/my_doctors" />
+        <item
+            android:id="@+id/nav_search_participant"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/search_participant" />
+    </group>
+
+    <item android:title="@string/my_data">
+        <menu>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_diary"
+            android:icon="@drawable/ic_library_books_black_24dp"
+            android:title="@string/diary" />
+        <item
+            android:id="@+id/nav_clinical"
+            android:icon="@drawable/ic_playlist_add_check_black_24dp"
+            android:title="@string/clinical" />
+        <item
+            android:id="@+id/nav_vitals"
+            android:icon="@drawable/ic_library_books_black_24dp"
+            android:title="Vitals" />
+    </group>
+        </menu>
+    </item>
+
+<item android:title="Settings">
+        <menu>
+            <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_conf"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Configuration" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_help_outline_black_24dp"
+                android:title="About" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="Scanner">
+        <menu>
+        <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_scan"
+                android:icon="@drawable/ic_view_column_black_24dp"
+                android:title="Scanner" />
+        </group>
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,23 @@
+image: git.credential.eu:8010/fokus/android-build-environment:latest
+
+before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./gradlew
+
+cache:
+  paths:
+     - .gradle/wrapper
+     - .gradle/caches
+
+build:
+  stage: build
+  script:
+     - ./gradlew assemble
+  artifacts:
+    paths:
+     - app/build/outputs/
+
+#test:
+#  stage: test
+#  script:
+#    - ./gradlew check

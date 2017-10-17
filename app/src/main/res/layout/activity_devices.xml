@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_devices"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="eu.credential.app.patient.ui.configuration.DevicesActivity"
+    android:orientation="vertical"
+    android:showDividers="middle">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_devices"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <LinearLayout
+        android:id="@+id/device_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:layout_weight="1"
+        android:background="@color/colorBackground"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/text_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorBackground"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/textview_glucometer"
+                android:textSize="36sp" />
+
+            <ImageView
+                android:id="@+id/imageView_glucometer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/textview_connected"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/x_mark" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.9"
+            android:background="@color/colorBackground"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/glucometer_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.01"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/text_glucometer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/textview_deviceNotFound"
+                android:textColor="@color/colorPrimary" />
+        </LinearLayout>
+
+        <GridLayout
+            android:id="@+id/butons_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.95"
+            android:background="@color/colorBackground"
+            android:divider="@drawable/spacer_medium"
+            android:orientation="horizontal"
+            android:showDividers="middle">
+
+            <ImageButton
+                android:id="@+id/search_glucometer"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_row="0"
+                android:adjustViewBounds="true"
+                android:background="@color/colorBackground"
+                android:contentDescription="@string/search"
+                android:onClick="onClickSearchGlucometer"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/search" />
+
+            <ImageButton
+                android:id="@+id/button_paring_glucometer"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_row="0"
+                android:background="@color/colorBackground"
+                android:contentDescription="@string/paring"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/paring" />
+
+        </GridLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="@color/colorPrimary"/>
+
+    <LinearLayout
+        android:id="@+id/device_2"
+        android:background="@color/colorBackground"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/text_2"
+            android:background="@color/colorBackground"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="@string/textview_digital_scale"
+                android:textSize="36sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView4" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/x_mark"
+                android:id="@+id/imageView_scale"
+                android:contentDescription="@string/textview_connected" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="@color/colorBackground"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="0.9"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/scale_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.01"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:text="" />
+        <TextView
+            android:text="@string/textview_deviceNotFound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:layout_weight="1"
+            android:id="@+id/text_device_scale"/>
+        </LinearLayout>
+
+        <GridLayout
+            android:id="@+id/butons_2"
+            android:background="@color/colorBackground"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_weight="0.95"
+            android:orientation="horizontal"
+            android:divider="@drawable/spacer_medium"
+            android:showDividers="middle">
+
+            <ImageButton
+                android:id="@+id/button_search_scale"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/colorBackground"
+                android:onClick="onClickSearchScale"
+                app:srcCompat="@drawable/search"
+                android:scaleType="fitCenter"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:contentDescription="@string/search"/>
+
+            <ImageButton
+                android:id="@+id/button_paring_scale"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorBackground"
+                app:srcCompat="@drawable/paring"
+                android:scaleType="fitCenter"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:contentDescription="@string/paring"/>
+
+        </GridLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="@color/colorPrimary"/>
+
+    <LinearLayout
+        android:id="@+id/device_3"
+        android:background="@color/colorBackground"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/text_3"
+            android:background="@color/colorBackground"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="@string/textview_step_count"
+                android:textSize="36sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView8" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/x_mark"
+                android:id="@+id/imageView_steps"
+                android:contentDescription="@string/textview_connected"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="@color/colorBackground"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="0.9"
+            android:orientation="horizontal">
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/steps_name" />
+            <TextView
+                android:text="@string/textview_deviceNotFound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:layout_weight="1"
+                android:id="@+id/text_device_name_steps"/>
+        </LinearLayout>
+
+        <GridLayout
+            android:id="@+id/butons_3"
+            android:background="@color/colorBackground"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_weight="0.95"
+            android:orientation="horizontal"
+            android:divider="@drawable/spacer_medium"
+            android:showDividers="middle">
+
+            <ImageButton
+                android:id="@+id/button_paring_steps"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorBackground"
+                app:srcCompat="@drawable/paring"
+                android:scaleType="fitCenter"
+                android:layout_row="0"
+                android:layout_column="1" />
+
+            <ImageButton
+                android:id="@+id/button_search_steps"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/colorBackground"
+                app:srcCompat="@drawable/search"
+                android:scaleType="fitCenter"
+                android:onClick="onClickSearchSteps"
+                android:layout_row="0"
+                android:layout_column="2" />
+
+        </GridLayout>
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ap="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_vital"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical"
+    tools:context="eu.credential.app.patient.ui.MainActivity">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:ap="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/ap_gray"
+        android:orientation="horizontal"
+        tools:context="com.example.administrator.credential.VitalActivity">
+
+        <com.androidplot.xy.XYPlot
+            android:id="@+id/plot1"
+            style="@style/FullScreenGraph"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            ap:lineLabelRotationBottom="-45"
+            ap:lineLabels="left|bottom"
+            ap:rangeTitle="@string/rangeZoom"
+            ap:title="@string/name_vital_weight" />
+        <!-- android:onClick="onClickZoom" -->
+
+        <com.androidplot.xy.XYPlot
+            android:id="@+id/plot2"
+            style="@style/FullScreenGraph"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            ap:lineLabelRotationBottom="-45"
+            ap:lineLabels="left|bottom"
+            ap:title="@string/name_vital_steps" />
+    </LinearLayout>
+</LinearLayout>
