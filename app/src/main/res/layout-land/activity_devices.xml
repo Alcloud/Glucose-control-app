@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/activity_devices"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="eu.credential.app.patient.ui.configuration.DevicesActivity"
@@ -12,14 +12,14 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_devices"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="?android:attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <LinearLayout
-        android:id="@+id/activity_devices"
+        android:id="@+id/activity_device"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="eu.credential.app.patient.ui.configuration.DevicesActivity"
@@ -41,7 +41,8 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:layout_weight="1.5"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="NestedWeights">
 
             <TextView
                 android:text="@string/textview_glucometer"
@@ -102,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@color/colorBackground"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/search"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
@@ -115,7 +116,7 @@
                 android:id="@+id/button_paring_glucometer"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorBackground"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/paring"
                 android:scaleType="fitCenter"
                 android:layout_row="0"
@@ -147,7 +148,8 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:layout_weight="1.5"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="NestedWeights">
 
             <TextView
                 android:text="@string/textview_digital_scale"
@@ -207,22 +209,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@color/colorBackground"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/search"
                 android:scaleType="fitCenter"
                 android:onClick="onClickSearchScale"
                 android:layout_row="0"
-                android:layout_column="2" />
+                android:layout_column="2"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@+id/button_paring_scale"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorBackground"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/paring"
                 android:scaleType="fitCenter"
                 android:layout_row="0"
-                android:layout_column="1" />
+                android:layout_column="1"
+                tools:ignore="ContentDescription" />
 
         </GridLayout>
     </LinearLayout>
@@ -249,7 +253,8 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:layout_weight="1.5"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="NestedWeights">
 
             <TextView
                 android:text="@string/textview_step_count"
@@ -264,7 +269,8 @@
                 android:layout_marginBottom="12dp"
                 android:layout_marginTop="5dp"
                 app:srcCompat="@drawable/x_mark"
-                android:id="@+id/imageView_steps" />
+                android:id="@+id/imageView_steps"
+                tools:ignore="ContentDescription" />
         </LinearLayout>
 
         <LinearLayout
@@ -304,11 +310,12 @@
                 android:id="@+id/button_paring_steps"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorBackground"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/paring"
                 android:scaleType="fitCenter"
                 android:layout_row="0"
-                android:layout_column="1" />
+                android:layout_column="1"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@+id/button_search_steps"
@@ -316,12 +323,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@color/colorBackground"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/search"
                 android:scaleType="fitCenter"
                 android:onClick="onClickSearchSteps"
                 android:layout_row="0"
-                android:layout_column="2" />
+                android:layout_column="2"
+                tools:ignore="ContentDescription" />
 
         </GridLayout>
 

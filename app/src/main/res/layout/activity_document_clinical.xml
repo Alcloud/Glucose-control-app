@@ -10,49 +10,47 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_document"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="?android:attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        tools:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        tools:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <LinearLayout
         android:id="@+id/toolbar_document_keys"
-        android:layout_below="@+id/toolbar_document"
-        android:layout_height="35dp"
         android:layout_width="match_parent"
+        android:layout_height="35dp"
         android:background="@color/colorBackground"
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/share_document"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorBackground"
-            tools:srcCompat="@drawable/share"
-            android:id="@+id/share_document"
-            android:onClick="onClickShare"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@color/colorBackground"
+            android:contentDescription="@string/share"
+            android:onClick="onClickShare"
             android:scaleType="fitCenter"
-            android:adjustViewBounds="true"/>
+            tools:srcCompat="@drawable/share" />
 
         <ImageButton
+            android:id="@+id/delete_document"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorBackground"
-            tools:srcCompat="@drawable/share"
-            android:id="@+id/delete_document"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@color/colorBackground"
+            android:contentDescription="@string/share"
             android:onClick="onClickDelete"
             android:scaleType="fitCenter"
-            android:adjustViewBounds="true"/>
+            tools:srcCompat="@drawable/share" />
 
     </LinearLayout>
 
     <WebView
         android:id="@+id/image_document"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar_document_keys"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_height="match_parent" />
 </LinearLayout>

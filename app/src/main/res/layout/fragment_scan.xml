@@ -1,43 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/activity_scan"
-android:background="@color/colorBackground"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="eu.credential.app.patient.ui.ScanFragment">
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:gravity="center"
+    android:id="@+id/activity_scan"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ImageButton
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:gravity="center"
-        app:srcCompat="@drawable/scan"
-        android:background="@color/colorBackground"
-        android:scaleType="fitCenter"
-        android:layout_centerHorizontal="true"
-        android:adjustViewBounds="true"
-        android:id="@+id/scan_button" />
-    <TextView
-        android:id="@+id/scan_format"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textIsSelectable="true"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/scan_button" />
-    <TextView
-        android:id="@+id/scan_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textIsSelectable="true"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/scan_format" />
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context="eu.credential.app.patient.ui.scanner.ScanFragment">
 
-</RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/textView_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/blood_sugar"
+            android:textSize="28sp"
+            android:layout_centerHorizontal="true"
+            android:textIsSelectable="true"/>
+
+        <ImageButton
+            android:id="@+id/scan_button"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:contentDescription="@string/scan_button"
+            android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
+            android:layout_below="@+id/textView_button"
+            android:layout_margin="5dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/scan" />
+
+        <TextView
+            android:id="@+id/textView_button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/scan_button"
+            android:text="@string/weight"
+            android:textSize="28sp"
+            android:layout_centerHorizontal="true"
+            android:textIsSelectable="true"/>
+
+        <ImageButton
+            android:id="@+id/scan_button1"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
+            android:layout_below="@+id/textView_button1"
+            android:layout_margin="5dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/scan" />
+
+        <TextView
+            android:id="@+id/scan_format"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scan_button1"
+            android:layout_centerHorizontal="true"
+            android:textIsSelectable="true" />
+
+        <TextView
+            android:id="@+id/scan_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scan_format"
+            android:layout_centerHorizontal="true"
+            android:textIsSelectable="true" />
+    </RelativeLayout>
 </RelativeLayout>

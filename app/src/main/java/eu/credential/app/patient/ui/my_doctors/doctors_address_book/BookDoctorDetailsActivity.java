@@ -1,27 +1,22 @@
 package eu.credential.app.patient.ui.my_doctors.doctors_address_book;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.credential_v020.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-
-import eu.credential.app.patient.orchestration.http.GetParticipantData;
-import eu.credential.app.patient.orchestration.http.UpdateParticipantData;
+import eu.credential.app.patient.PatientApp;
+import eu.credential.app.patient.helper.GetData;
+import eu.credential.app.patient.helper.SavePreferences;
+import eu.credential.app.patient.helper.TransmitData;
 import eu.credential.app.patient.ui.my_doctors.doctors_address_book.dialog_fragments.AskToAccessTypeDialog;
-import eu.credential.app.patient.ui.my_doctors.doctors_address_book.dialog_fragments.AskToChangeFragment;
 import eu.credential.app.patient.ui.my_doctors.doctors_address_book.dialog_fragments.AskToDeleteParticipantDialog;
 
 /**
@@ -30,180 +25,91 @@ import eu.credential.app.patient.ui.my_doctors.doctors_address_book.dialog_fragm
  * This activity shows the doctor's data in details.
  * The user can set or delete the doctor and his role from address book right from this activity.
  */
-
 public class BookDoctorDetailsActivity extends AppCompatActivity {
+    // Text
+    private TextView doctorName;
+    private TextView doctorSurname;
+    private String dataId = SavePreferences.getDefaultsString("dataIdDMS1", PatientApp.getContext());
 
-    TextView doctorName;
-    TextView doctorSurname;
-    TextView doctorRole;
-    TextView doctorCity;
-    TextView accessData;
-    TextView doctorDescription;
-    private String accountId = "HansAugust";
+    private GetData getData = new GetData(dataId, this);
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_doctor_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_doctor_details);
+        Toolbar toolbar = findViewById(R.id.toolbar_doctor_book_details);
 
         toolbar.setTitle(AddressBookFragment.name + " " + AddressBookFragment.surname);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_arrow_back);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        doctorName = (TextView) findViewById(R.id.textView_doctor_name_book);
-        doctorSurname = (TextView) findViewById(R.id.textView_doctor_surname_book);
-        doctorRole = (TextView) findViewById(R.id.textView_doctor_role_book);
-        doctorCity = (TextView) findViewById(R.id.textView_doctor_city_book);
-        accessData = (TextView) findViewById(R.id.text_doctor_access_data);
-        doctorDescription = (TextView) findViewById(R.id.text_doctor_description_book);
+        // get doctors data from DMS
+        getData.refreshList();
+
+        ImageView firstRoleIcon = findViewById(R.id.role_icon);
+        ImageView secondRoleIcon = findViewById(R.id.role_second_icon);
+        doctorName = findViewById(R.id.textView_doctor_name_book);
+        doctorSurname = findViewById(R.id.textView_doctor_surname_book);
+        TextView doctorRole = findViewById(R.id.textView_doctor_role_book);
+        TextView doctorCity = findViewById(R.id.textView_doctor_city_book);
+        TextView accessData = findViewById(R.id.text_doctor_access_data);
+        TextView doctorDescription = findViewById(R.id.text_doctor_description_book);
 
         doctorName.setText(AddressBookFragment.name);
         doctorSurname.setText(AddressBookFragment.surname);
         doctorRole.setText(AddressBookFragment.role);
         doctorCity.setText(AddressBookFragment.city);
 
+        if (AddressBookFragment.diabetologist) {
+            firstRoleIcon.setImageResource(R.mipmap.diabetologist_activ_icon);
+        } else if (AddressBookFragment.familyDoctor) {
+            firstRoleIcon.setImageResource(R.mipmap.family_doctor_activ);
+        } else if (AddressBookFragment.diabetologist && AddressBookFragment.familyDoctor) {
+            firstRoleIcon.setImageResource(R.mipmap.diabetologist_activ_icon);
+            secondRoleIcon.setImageResource(R.mipmap.family_doctor_activ);
+        }
         refresh();
+
         doctorDescription.setText("Doctor " + AddressBookFragment.name + " " +
                 AddressBookFragment.surname + " is a " + AddressBookFragment.role + " from " +
                 AddressBookFragment.city + ". If you want to set Dr. " + AddressBookFragment.name +
-                " " + AddressBookFragment.surname + " as " + AddressBookMainFragment.role +
-                ", just push an Add button below.");
+                " " + AddressBookFragment.surname + " as diabetologist or family doctor, just " +
+                "press a corresponding button below.");
     }
 
-    // add a doctor to address book
-    public void onClickAdd(View view) throws IOException {
-
-        if (AddressBookMainFragment.role.equals(getString(R.string.diabetologist))) {
-            addRole(getString(R.string.diabetologist), doctorName.getText().toString(),
-                    doctorSurname.getText().toString(), doctorRole.getText().toString(), doctorCity.getText().toString());
-        } else if (AddressBookMainFragment.role.equals(getString(R.string.family_doctor))) {
-            addRole(getString(R.string.family_doctor), doctorName.getText().toString(),
-                    doctorSurname.getText().toString(), doctorRole.getText().toString(), doctorCity.getText().toString());
-        }
-        finish();
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData.refreshList();
     }
 
     // delete a doctor or his role from address book
     public void onClickDelete(View view) {
-        AskToDeleteParticipantDialog myDialogFragment = new AskToDeleteParticipantDialog();
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        Bundle bundle = new Bundle();
-
-        bundle.putString("name", doctorName.getText().toString());
-        bundle.putString("surname", doctorSurname.getText().toString());
-        bundle.putString("role", AddressBookFragment.role);
-        bundle.putInt("activity", 1);
-
-        myDialogFragment.setArguments(bundle);
-        myDialogFragment.show(transaction, "dialog");
+        DialogFragment askToDeleteParticipantDialog = new AskToDeleteParticipantDialog();
+        final TransmitData transmitData = new TransmitData.TransmitDataBuilder()
+                .id(AddressBookFragment.ids)
+                .name(doctorName.getText().toString())
+                .surname(doctorSurname.getText().toString())
+                .dialogFragment(askToDeleteParticipantDialog)
+                .activity(2).fragmentActivity(this).build();
+        transmitData.changeFragmentToDialog();
     }
 
     // set a special access for doctor
     public void onClickAccess(View view) {
-
-        AskToAccessTypeDialog myDialogFragment = new AskToAccessTypeDialog();
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-
-        Bundle bundle = new Bundle();
-        bundle.putString("name", doctorName.getText().toString());
-
-        myDialogFragment.setArguments(bundle);
-        myDialogFragment.show(transaction, "dialog");
-    }
-
-    // method to set a doctor as "role"
-    private void setDoctor(String name, String surname, String role, String city, String mainRole) {
-
-        if (AddressBookMainFragment.name.equals("") || AddressBookMainFragment.name.equals("not registered")) {
-
-            for (int i = 0; i < AddressBookMainFragment.listDoctor.size(); i++) {
-                if (name.equals(AddressBookMainFragment.listDoctor.get(i).getName()) &&
-                        surname.equals(AddressBookMainFragment.listDoctor.get(i).getSurname()) &&
-                        AddressBookMainFragment.listDoctor.get(i).getRole().equals("null")) {
-                    GetParticipantData getParticipantData = new GetParticipantData(accountId);
-                    try {
-                        JSONArray doctorArray = getParticipantData.execute().get();
-                        for (int j = 0; j < doctorArray.length(); j++) {
-                            // TODO: Change "surname" to "id", when doctors will be get from LDAP
-                            if (doctorArray.getJSONObject(j).getString("surname").equals(surname) &&
-                                    doctorArray.getJSONObject(j).getString("name").equals(name)) {
-                                doctorArray.getJSONObject(j).put("role", role);
-                            }
-                        }
-                        UpdateParticipantData updateParticipantData = new UpdateParticipantData
-                                (doctorArray, accountId, "delete");
-                        updateParticipantData.execute();
-                        Toast.makeText(getApplicationContext(), "Doctor " + name + " " + surname +
-                                " was set as " + role + ".", Toast.LENGTH_SHORT).show();
-                        finish();
-                    } catch (InterruptedException | ExecutionException | JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (name.equals(AddressBookMainFragment.listDoctor.get(i).getName()) &&
-                        surname.equals(AddressBookMainFragment.listDoctor.get(i).getSurname()) &&
-                        AddressBookMainFragment.listDoctor.get(i).getRole().equals(getString(R.string.diabetologist))) {
-                    Toast.makeText(getApplicationContext(), "This doctor is already set as " +
-                            getString(R.string.diabetologist), Toast.LENGTH_SHORT).show();
-                }
-                if (name.equals(AddressBookMainFragment.listDoctor.get(i).getName()) &&
-                        surname.equals(AddressBookMainFragment.listDoctor.get(i).getSurname()) &&
-                        AddressBookMainFragment.listDoctor.get(i).getRole().equals(getString(R.string.family_doctor))) {
-                    Toast.makeText(getApplicationContext(), "This doctor is already set as " +
-                            getString(R.string.family_doctor), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        } else {
-            //Send data to AskToChangeFragment
-            AskToChangeFragment myDialogFragment = new AskToChangeFragment();
-            FragmentManager manager = getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            Bundle bundle = new Bundle();
-            // new person
-            bundle.putString("mainrole", mainRole);
-            bundle.putString("name", name);
-            bundle.putString("surname", surname);
-            bundle.putString("role", role);
-            bundle.putString("city", city);
-            // previous person
-            bundle.putString("previousname", AddressBookMainFragment.name);
-            bundle.putString("previoussurname", AddressBookMainFragment.surname);
-            bundle.putString("previousrole", AddressBookMainFragment.role);
-            bundle.putString("previouscity", AddressBookMainFragment.city);
-
-            myDialogFragment.setArguments(bundle);
-            myDialogFragment.show(transaction, "dialog");
-        }
-    }
-
-    // method to add a new role to doctor and check if he has this role already
-    private void addRole(String role, String name, String surname, String mainRole, String city) {
-        if (AddressBookMainFragment.role.equals(role)) {
-            if (AddressBookMainFragment.name.equals(name) && AddressBookMainFragment.surname.equals(surname)) {
-                Toast.makeText(getApplicationContext(), "This doctor is already set as " +
-                        role, Toast.LENGTH_SHORT).show();
-            } else {
-                setDoctor(name, surname, role, city, mainRole);
-            }
-        }
+        DialogFragment askToAccessTypeDialog = new AskToAccessTypeDialog();
+        final TransmitData transmitData = new TransmitData.TransmitDataBuilder()
+                .id(AddressBookFragment.ids)
+                .name(doctorName.getText().toString())
+                .surname(doctorSurname.getText().toString())
+                .dialogFragment(askToAccessTypeDialog)
+                .fragmentActivity(this).build();
+        transmitData.changeFragmentToDialog();
     }
 
     public void refresh() {
-        try {
-            String access;
-            if (!JSONFile.readJSONAccess(getApplicationContext()).isEmpty()) {
-                access = JSONFile.readJSONAccess(getApplicationContext()).get(0);
-                accessData.setText(access);
-            } else {
-                accessData.setText("no access");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //TODO: show access list
     }
 }

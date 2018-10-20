@@ -1,0 +1,180 @@
+------=_Part_{{PART_UUID}}
+{{{EMPTY_LINE}}}
+Content-Type: application/xop+xml; charset=UTF-8; type="application/soap+xml"; action="DocumentRepository_ProvideAndRegisterDocumentSet-b"
+{{{EMPTY_LINE}}}
+Content-Transfer-Encoding: 8bit
+{{{EMPTY_LINE}}}
+Content-ID: <rootpart@test.org>
+{{{EMPTY_LINE}}}
+{{{EMPTY_LINE}}}
+
+
+<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope">
+    <s:Header xmlns:a="http://www.w3.org/2005/08/addressing">
+        <a:Action s:mustUnderstand="1">urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b</a:Action>
+        <a:MessageID s:mustUnderstand="1">{{MESSAGE_UUID}}</a:MessageID>
+    </s:Header>
+    <s:Body>
+        <xdsb:ProvideAndRegisterDocumentSetRequest
+                xmlns:lcm="urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0"
+                xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+                xmlns:rs="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0"
+                xmlns:xdsb="urn:ihe:iti:xds-b:2007"
+                xmlns:xop="http://www.w3.org/2004/08/xop/include">
+            <lcm:SubmitObjectsRequest>
+                <rim:RegistryObjectList>
+
+                    <!-- SubmissionSet -->
+                    <rim:RegistryPackage id="{{SUBMISSION_SET_ENTRY_UUID}}"
+                                         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage">
+                        <!-- SubmissionSet.submissionTime -->
+                        <rim:Slot name="submissionTime">
+                            <rim:ValueList>
+                                <rim:Value>{{SUBMISSION_SET_SUBMISSION_TIME}}</rim:Value>
+                            </rim:ValueList>
+                        </rim:Slot>
+
+                        <!-- SubmissionSet.contentTypeCode -->
+                        <rim:Classification
+                                classificationScheme="urn:uuid:aa543740-bdda-424e-8c96-df4873be8500"
+                                classifiedObject="{{SUBMISSION_SET_ENTRY_UUID}}"
+                                id="{{SUBMISSION_SET_CONTENT_TYPE_CODE_UUID}}"
+                                nodeRepresentation="*"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification">
+                            <rim:Slot name="codingScheme">
+                                <rim:ValueList>
+                                    <rim:Value>2.16.840.1.113883.6.1</rim:Value>
+                                </rim:ValueList>
+                            </rim:Slot>
+                            <rim:Name>
+                                <rim:LocalizedString value="*"/>
+                            </rim:Name>
+                        </rim:Classification>
+
+                        <!-- SubmissionSet Classification -->
+                        <rim:Classification
+                                classificationNode="urn:uuid:a54d6aa5-d40d-43f9-88c5-b4633d873bdd"
+                                classifiedObject="{{SUBMISSION_SET_ENTRY_UUID}}"
+                                id="{{SUBMISSION_SET_CLASSIFICATION_UUID}}"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"/>
+                        <!-- SubmissionSet.sourceId -->
+                        <rim:ExternalIdentifier id="{{SUBMISSION_SET_SOURCE_ID_UUID}}"
+                                                identificationScheme="urn:uuid:554ac39e-e3fe-47fe-b233-965d2a147832"
+                                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"
+                                                registryObject="{{SUBMISSION_SET_ENTRY_UUID}}"
+                                                value="1.3.6.1.4.1.21367.2012.2.1.1">
+                            <rim:Name>
+                                <rim:LocalizedString value="XDSSubmissionSet.sourceId"/>
+                            </rim:Name>
+                        </rim:ExternalIdentifier>
+                        <!-- SubmissionSet.uniqueId -->
+                        <rim:ExternalIdentifier id="{{SUBMISSION_SET_UNIQUE_ID_UUID}}"
+                                                identificationScheme="urn:uuid:96fdda7c-d067-4183-912e-bf5ee74998a8"
+                                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"
+                                                registryObject="{{SUBMISSION_SET_ENTRY_UUID}}"
+                                                value="{{SUBMISSION_SET_UNIQUE_ID_VALUE}}">
+                            <rim:Name>
+                                <rim:LocalizedString value="XDSSubmissionSet.uniqueId"/>
+                            </rim:Name>
+                        </rim:ExternalIdentifier>
+                        <!-- SubmissionSet.patientId -->
+                        <rim:ExternalIdentifier id="{{SUBMISSION_SET_PATIENT_ID_UUID}}"
+                                                identificationScheme="urn:uuid:6b5aea1a-874d-4603-a4bc-96a0a7b38446"
+                                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"
+                                                registryObject="{{SUBMISSION_SET_ENTRY_UUID}}"
+                                                value="{{PATIENT_ID}}">
+                            <rim:Name>
+                                <rim:LocalizedString value="XDSSubmissionSet.patientId"/>
+                            </rim:Name>
+                        </rim:ExternalIdentifier>
+                    </rim:RegistryPackage>
+
+                    <!-- Folder -->
+                    <rim:RegistryPackage id="{{FOLDER_ENTRY_UUID}}"
+                                         objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage"
+                                         status="urn:oasis:names:tc:ebxml-regrep:StatusType:Approved">
+                        <!-- Folder.lastUpdateTime -->
+                        <rim:Slot name="lastUpdateTime">
+                            <rim:ValueList>
+                                <rim:Value>{{LAST_UPDATE_TIME}}</rim:Value>
+                            </rim:ValueList>
+                        </rim:Slot>
+                        <!-- Folder.title -->
+                        <rim:Name>
+                            <rim:LocalizedString value="Palliativ-Akte"/>
+                        </rim:Name>
+
+                        <!-- Folder.codeList: EFA -->
+                        <rim:Classification
+                                classificationScheme="urn:uuid:1ba97051-7806-41a8-a48b-8fce7af683c5"
+                                classifiedObject="{{FOLDER_ENTRY_UUID}}"
+                                id="{{NEW_FOLDER_CLASS_CODE_UUID}}"
+                                nodeRepresentation="{{NEW_FOLDER_CLASS_CODE_NODE_REPRESENTATION}}"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification">
+                            <rim:Slot name="codingScheme">
+                                <rim:ValueList>
+                                    <rim:Value>{{NEW_FOLDER_CLASS_CODE_SYSTEM}}</rim:Value>
+                                </rim:ValueList>
+                            </rim:Slot>
+                            <rim:Name>
+                                <rim:LocalizedString
+                                        value="{{NEW_FOLDER_CLASS_CODE_LOCALIZED_STRING}}"/>
+                            </rim:Name>
+                        </rim:Classification>
+                        <!-- Folder.codeList: Zweck -->
+                        <rim:Classification
+                                classificationScheme="urn:uuid:1ba97051-7806-41a8-a48b-8fce7af683c5"
+                                classifiedObject="{{FOLDER_ENTRY_UUID}}"
+                                id="{{NEW_FOLDER_CONFIDENTIALITY_CODE_UUID}}"
+                                nodeRepresentation="Test:Connectathon-2016:Sinusitis-Demo"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification">
+                            <rim:Slot name="codingScheme">
+                                <rim:ValueList>
+                                    <rim:Value>{{NEW_FOLDER_FORMAT_CODE_SYSTEM}}</rim:Value>
+                                </rim:ValueList>
+                            </rim:Slot>
+                            <rim:Name>
+                                <rim:LocalizedString
+                                        value="{{NEW_FOLDER_FORMAT_GOAL_LOCALIZED_STRING}}"/>
+                            </rim:Name>
+                        </rim:Classification>
+                        <!-- Folder Classification -->
+                        <rim:Classification
+                                classificationNode="urn:uuid:d9d542f3-6cc4-48b6-8870-ea235fbc94c2"
+                                classifiedObject="{{FOLDER_ENTRY_UUID}}"
+                                id="743a3e43-55f8-4148-9200-d2b819aa6fce"
+                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"/>
+                        <!-- Folder.uniqueId -->
+                        <rim:ExternalIdentifier id="{{NEW_FOLDER_UNIQUE_ID_UUID}}"
+                                                identificationScheme="urn:uuid:75df8f67-9973-4fbe-a900-df66cefecc5a"
+                                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"
+                                                registryObject="{{FOLDER_ENTRY_UUID}}"
+                                                value="{{NEW_FOLDER_UNIQUE_ID_VALUE}}">
+                            <rim:Name>
+                                <rim:LocalizedString value="XDSFolder.uniqueId"/>
+                            </rim:Name>
+                        </rim:ExternalIdentifier>
+                        <!-- Folder.patientId -->
+                        <rim:ExternalIdentifier id="{{NEW_FOLDER_PATIENT_ID_UUID}}"
+                                                identificationScheme="urn:uuid:f64ffdf0-4b97-4e06-b79f-a52b38ec2f8a"
+                                                objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier"
+                                                registryObject="{{FOLDER_ENTRY_UUID}}"
+                                                value="{{PATIENT_ID}}">
+                            <rim:Name>
+                                <rim:LocalizedString value="XDSFolder.patientId"/>
+                            </rim:Name>
+                        </rim:ExternalIdentifier>
+                    </rim:RegistryPackage>
+                    <!-- HasMember : SubmissionSet to Folder -->
+                    <rim:Association
+                            associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember"
+                            id="{{ASSOCIATION_SUBMISSION_SET_ASSOCIATION_UUID}}"
+                            sourceObject="{{SUBMISSION_SET_ENTRY_UUID}}"
+                            targetObject="{{FOLDER_ENTRY_UUID}}"/>
+                </rim:RegistryObjectList>
+            </lcm:SubmitObjectsRequest>
+        </xdsb:ProvideAndRegisterDocumentSetRequest>
+    </s:Body>
+</s:Envelope>
+{{{EMPTY_LINE}}}
+------=_Part_{{PART_UUID}}--

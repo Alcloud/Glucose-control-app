@@ -2,8 +2,9 @@
 <resources>
     <color name="colorPrimary">#dcdcdc</color>
     <color name="colorBackground">#0090c4</color>
+    <color name="colorBackgroundPrivacy">#0c1b24</color>
     <color name="colorPrimaryDark">#007dab</color>
-    <color name="colorAccent">#b6a700</color>
+    <color name="colorAccent">#1270b7</color>
     <color name="colorBackgroundDark">#7e6235</color>
     <color name="colorSign">#ec8200</color>
 </resources>

@@ -4,7 +4,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_health_records"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/clipboard_pulse"
             android:title="@string/my_health_record" />
         <item
             android:id="@+id/nav_doctors"
@@ -12,51 +12,62 @@
             android:title="@string/my_doctors" />
         <item
             android:id="@+id/nav_search_participant"
-            android:icon="@drawable/ic_person_black_24dp"
+            android:icon="@drawable/account_multiple_plus"
             android:title="@string/search_participant" />
     </group>
 
-    <item android:title="@string/my_data">
-        <menu>
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_diary"
-            android:icon="@drawable/ic_library_books_black_24dp"
-            android:title="@string/diary" />
-        <item
-            android:id="@+id/nav_clinical"
-            android:icon="@drawable/ic_playlist_add_check_black_24dp"
-            android:title="@string/clinical" />
-        <item
-            android:id="@+id/nav_vitals"
-            android:icon="@drawable/ic_library_books_black_24dp"
-            android:title="Vitals" />
-    </group>
-        </menu>
-    </item>
-
-<item android:title="Settings">
+    <item android:title="@string/my_data"
+        android:id="@+id/nav_my_vital_data">
         <menu>
             <group android:checkableBehavior="single">
-            <item
-                android:id="@+id/nav_conf"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="Configuration" />
-            <item
-                android:id="@+id/nav_about"
-                android:icon="@drawable/ic_help_outline_black_24dp"
-                android:title="About" />
+                <item
+                    android:id="@+id/nav_blood_sugar"
+                    android:icon="@drawable/chart_areaspline"
+                    android:title="@string/blood_sugar" />
+                <item
+                    android:id="@+id/nav_hba1c"
+                    android:icon="@drawable/chart_areaspline"
+                    android:title="@string/hba1c" />
+                <item
+                    android:id="@+id/nav_weight"
+                    android:icon="@drawable/chart_areaspline"
+                    android:title="@string/weight" />
             </group>
         </menu>
     </item>
-    <item android:title="Scanner">
+
+    <item android:title="@string/settings">
         <menu>
-        <group android:checkableBehavior="single">
-            <item
-                android:id="@+id/nav_scan"
-                android:icon="@drawable/ic_view_column_black_24dp"
-                android:title="Scanner" />
-        </group>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_conf"
+                    android:icon="@drawable/ic_menu_manage"
+                    android:title="@string/configuration" />
+                <item
+                    android:id="@+id/nav_about"
+                    android:icon="@drawable/ic_help_outline_black_24dp"
+                    android:title="@string/about" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="@string/do_not_use">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_scan"
+                    android:icon="@drawable/barcode_scan"
+                    android:title="@string/debug" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/logout"
+                    android:icon="@drawable/logout_icon"
+                    android:title="@string/sign_out" />
+            </group>
         </menu>
     </item>
 

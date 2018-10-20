@@ -2,16 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_doctor_details"
+    android:id="@+id/activity_book_doctor_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="eu.credential.app.patient.ui.searchParticipant.DoctorDetailsActivity">
+    tools:context="eu.credential.app.patient.ui.my_doctors.doctors_address_book.BookDoctorDetailsActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_doctor_details"
+        android:id="@+id/toolbar_doctor_book_details"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="?android:attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/toolbar_doctor_details"
+        android:layout_below="@+id/toolbar_doctor_book_details"
         android:layout_centerVertical="true"
         android:layout_margin="10dp"
         android:orientation="horizontal">
@@ -30,9 +30,10 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
+            android:contentDescription="@string/participant_photo"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/doctor" />
+            app:srcCompat="@mipmap/doctor" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,7 +51,7 @@
                     android:id="@+id/textView_doctor_name_book"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name"
+                    android:text="@string/name"
                     android:textColor="@color/colorPrimary"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -59,7 +60,7 @@
                     android:id="@+id/textView_doctor_surname_book"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
+                    android:layout_marginStart="6dp"
                     android:textColor="@color/colorPrimary"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -70,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Diabetologist"
+                android:text="@string/role"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -79,10 +80,73 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Berlin"
+                android:text="@string/city"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttons_doctor_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/first_line_event"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/button_delete_doctor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/delete_button"
+                android:contentDescription="@string/action_delete_participant"
+                android:onClick="onClickDelete" />
+
+            <ImageButton
+                android:id="@+id/button_access"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/access_button"
+                android:contentDescription="@string/action_access_right"
+                android:onClick="onClickAccess" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/role_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_add_to" />
+
+            <ImageView
+                android:id="@+id/role_second_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_add_to" />
         </LinearLayout>
     </LinearLayout>
 
@@ -90,7 +154,7 @@
         android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/first_line_event"
+        android:layout_below="@+id/buttons_doctor_details"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:background="@color/colorPrimary" />
@@ -113,14 +177,6 @@
             android:textSize="16sp" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Doctor has access:"
-            android:textColor="@color/colorSign"
-            android:textSize="18sp" />
-
-        <TextView
             android:id="@+id/text_doctor_access_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,55 +186,6 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/button_delete_doctor"
-                android:layout_width="wrap_content"
-                android:layout_height="58dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="@color/colorBackground"
-                android:contentDescription="@string/action_add_to"
-                android:cropToPadding="true"
-                android:onClick="onClickDelete"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/delete_256" />
-
-            <ImageButton
-                android:id="@+id/button_add_to_role"
-                android:layout_width="wrap_content"
-                android:layout_height="58dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="@color/colorBackground"
-                android:contentDescription="@string/action_add_to"
-                android:cropToPadding="true"
-                android:onClick="onClickAdd"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/add_user256" />
-
-            <ImageButton
-                android:id="@+id/button_access"
-                android:layout_width="wrap_content"
-                android:layout_height="58dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="@color/colorBackground"
-                android:contentDescription="@string/action_add_to"
-                android:cropToPadding="true"
-                android:onClick="onClickAccess"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/access" />
-        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
 

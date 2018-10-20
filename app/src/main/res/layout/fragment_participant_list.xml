@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
@@ -10,7 +11,8 @@
         android:id="@+id/iconDoctor"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_weight="4" />
+        android:layout_weight="4"
+        android:contentDescription="@string/participant_photo" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -19,10 +21,11 @@
         android:orientation="horizontal">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="NestedWeights">
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
@@ -33,15 +36,15 @@
                     android:id="@+id/textViewDoctorNameDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Text"
+                    android:text="@string/name"
                     android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/textViewDoctorSurnameDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
-                    android:text="Text"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/surname"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -49,17 +52,39 @@
                 android:id="@+id/textViewDoctorRoleDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Read2"
+                android:text="@string/role"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/textViewDoctorCityDetails"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Read3"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewDoctorPostCodeDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textViewDoctorCityDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/city"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textViewDoctorIdDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    android:visibility="invisible" />
+            </LinearLayout>
         </LinearLayout>
 
         <ImageButton
@@ -68,12 +93,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="23dp"
             android:adjustViewBounds="true"
-            android:background="@color/colorBackground"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/action_add_to"
             android:cropToPadding="true"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/add_user256" />
-
     </LinearLayout>
-
 </LinearLayout>

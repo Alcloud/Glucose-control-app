@@ -11,17 +11,26 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import eu.credential.app.patient.integration.bluetooth.BleBroadcastReceiver;
 import eu.credential.app.patient.integration.bluetooth.BleService;
 import eu.credential.app.patient.integration.bluetooth.BleServiceConnection;
 import eu.credential.app.patient.integration.model.DeviceInformation;
+import eu.credential.app.patient.integration.model.GlucoseMeasurement;
 import eu.credential.app.patient.integration.model.Measurement;
+import eu.credential.app.patient.integration.model.WeightMeasurement;
+import eu.credential.app.patient.orchestration.http.PHRdata;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -42,7 +51,7 @@ public class CollectorService extends Service {
             "CollectorService.COLLECTOR_STOPPED";
     public final static String ACTION_DEVICE_CONNECTED =
             "CollectorService.ACTION_DEVICE_CONNECTED";
-    public final static String ACTION_DEVICE_DISCONNECTED=
+    public final static String ACTION_DEVICE_DISCONNECTED =
             "CollectorService.ACTION_DEVICE_DISCONNECTED";
 
     public enum Type {GLUCOSE_COLLECTION, WEIGHT_COLLECTION}
@@ -57,6 +66,9 @@ public class CollectorService extends Service {
 
     // logging indicator
     private final static String TAG = CollectorService.class.getSimpleName();
+
+    // performance indicator
+    private static final String TAG_PERF = "Performance";
 
     // BroadcastManager
     private LocalBroadcastManager localBroadcastManager;
@@ -101,6 +113,7 @@ public class CollectorService extends Service {
         // Instantiate the message queue
         this.messageQueue = new LinkedBlockingQueue<>();
     }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // We want this service to continue running until it is explicitly
@@ -222,14 +235,46 @@ public class CollectorService extends Service {
      *
      * @param measurement
      */
-    public void receiveMeasurement(Measurement measurement, String deviceAdress) {
-        Log.d(TAG, "Received measurement from " + deviceAdress + ": \"" + measurement.toString() + "\"");
-
+    public void receiveMeasurement(Measurement measurement, String deviceAddress) {
+        Log.d(TAG, "Received measurement from " + deviceAddress + ": \"" + measurement.toString() + "\"");
         // Take first the counter and then increment
         Integer id = this.counter;
         measurementMap.put(id, measurement);
+        // set new measurement (JSON array element) and save it to PHR document
+        if (measurement instanceof GlucoseMeasurement) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(((GlucoseMeasurement) measurement).getBaseTime());
+            // TODO: Change the logic to get only one (last) glucose value.
+            if (cal.get(Calendar.MINUTE) <= 57) {
+                cal.add(Calendar.MINUTE, 2);
+            }
+            if (cal.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR) &&
+                    cal.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH) &&
+                    cal.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH) &&
+                    cal.get(Calendar.HOUR_OF_DAY) == Calendar.getInstance().get(Calendar.HOUR_OF_DAY) &&
+                    cal.get(Calendar.MINUTE) > Calendar.getInstance().get(Calendar.MINUTE)) {
+                saveMeasurementToPHR(setGlucoseInPHRDocument(
+                        String.valueOf(((GlucoseMeasurement) measurement).getSequenceNumber()),
+                        String.valueOf(Math.round(((GlucoseMeasurement) measurement).getGlucoseConcentration() * 100000)),
+                        String.valueOf(((GlucoseMeasurement) measurement).getUnit()),
+                        String.valueOf(((GlucoseMeasurement) measurement).getType()),
+                        String.valueOf(((GlucoseMeasurement) measurement).getSampleLocation()),
+                        String.valueOf(((GlucoseMeasurement) measurement).getSensorStatus()),
+                        String.valueOf(((GlucoseMeasurement) measurement).getBaseTime()),
+                        String.valueOf(measurement.getReceiveTime())), "glucoseId");
+            }
+        }
+        if (measurement instanceof WeightMeasurement) {
+            saveMeasurementToPHR(setWeightInPHRDocument(
+                    String.valueOf(((WeightMeasurement) measurement).getWeight()),
+                    String.valueOf(((WeightMeasurement) measurement).getHeight()),
+                    String.valueOf(((WeightMeasurement) measurement).getBmi()),
+                    String.valueOf(((WeightMeasurement) measurement).getWeightUnit()),
+                    String.valueOf(((WeightMeasurement) measurement).getHeightUnit()),
+                    String.valueOf(((WeightMeasurement) measurement).getBaseTime()),
+                    String.valueOf(measurement.getReceiveTime())), "weightId");
+        }
         this.counter++;
-
         // broadcast the new status update
         broadcastMeasurementCollected();
     }
@@ -243,7 +288,6 @@ public class CollectorService extends Service {
         Log.d(TAG, "Received deviceInformation from " + deviceAdress + ": \"" + deviceInformation.toString() + "\"");
 
         deviceInformationMap.put(deviceAdress, deviceInformation);
-
         // broadcast the new status update
         broadcastDeviceInformationCollected();
     }
@@ -421,4 +465,199 @@ public class CollectorService extends Service {
         handler.processResult(intent);
     }
 
+    /**
+     * This method add the new measurement to array in PHR document.
+     * When no document exist, firstly create a new one.
+     *
+     * @param measurementJSONObject
+     */
+    private void saveMeasurementToPHR(String measurementJSONObject, String type) {
+        JSONObject jsonObject;
+        try {
+            long startTime = System.nanoTime();
+
+            // check if the PHR document exist and retrieve the document with glucose or weight data
+            JSONArray documentContentArray = new PHRdata(type, "newMeasurement", null).execute().get();
+
+            if (documentContentArray != null && !documentContentArray.toString().equals("[]")) {
+                // add new value to document content
+                jsonObject = new JSONObject(measurementJSONObject);
+                documentContentArray.put(jsonObject);
+
+                // create a new PHR document
+                new PHRdata(type, "createDocuments", documentContentArray).execute();
+                long endTime = System.nanoTime();
+                Log.i(TAG_PERF, "Measure|Retrieve a PHR document with measurement|mix|-|" + startTime / 1000000 + "|" +
+                        (endTime - startTime) / 1000000 + "|" + "-");
+
+                // first create a document in PHR
+            } else {
+                documentContentArray = new JSONArray();
+                jsonObject = new JSONObject(measurementJSONObject);
+                documentContentArray.put(jsonObject);
+                new PHRdata(type, "createDocuments", documentContentArray).execute();
+                long endTime = System.nanoTime();
+                Log.i(TAG_PERF, "Measure|Create new PHR document with measurement|mix|-|" + startTime / 1000000 + "|" +
+                        (endTime - startTime) / 1000000 + "|" + "-");
+            }
+            long endTime = System.nanoTime();
+            Log.i(TAG_PERF, "Measure|Measure|mix|-|" + startTime / 1000000 + "|" +
+                    (endTime - startTime) / 1000000 + "|" + "-");
+        } catch (InterruptedException | ExecutionException | JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This method create a new JSON element with weight measurement values.
+     */
+    private String setWeightInPHRDocument(String weight, String height, String bmi, String weightUnit,
+                                          String heightUnit, String deviceTime, String receiveTime) {
+        return "{\n" +
+                "  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n" +
+                "  \"title\": \"Weight Measurement\",\n" +
+                "  \"type\": \"object\",\n" +
+                "  \"properties\": {\n" +
+                "    \"weight\": {\n" +
+                "      \"description\": \"measured mass in weight units\",\n" +
+                "      \"type\": \"number\",\n" +
+                "      \"value\": \"" + weight + "\",\n" +
+                "      \"minimum\": 0\n" +
+                "    },\n" +
+                "    \"weightUnit\": {\n" +
+                "      \"description\": \"mass unit\",\n" +
+                "      \"value\": \"" + weightUnit + "\",\n" +
+                "      \"enum\": [\n" +
+                "        \"kg\",\n" +
+                "        \"lb\"\n" +
+                "      ]\n" +
+                "    },\n" +
+                "    \"height\": {\n" +
+                "      \"description\": \"measured size in height units\",\n" +
+                "      \"type\": \"number\",\n" +
+                "      \"value\": \"" + height + "\",\n" +
+                "      \"minimum\": 0\n" +
+                "    },\n" +
+                "    \"heightUnit\": {\n" +
+                "      \"description\": \"size unit\",\n" +
+                "      \"value\": \"" + heightUnit + "\",\n" +
+                "      \"enum\": [\n" +
+                "        \"m\",\n" +
+                "        \"in\"\n" +
+                "      ]\n" +
+                "    },\n" +
+                "    \"bmi\": {\n" +
+                "      \"description\": \"calculated body mass index\",\n" +
+                "      \"type\": \"number\",\n" +
+                "      \"value\": \"" + bmi + "\",\n" +
+                "      \"minimum\": 0\n" +
+                "    },\n" +
+                "    \"deviceTime\": {\n" +
+                "      \"description\": \"ISO time string given by measurement device\",\n" +
+                "      \"value\": \"" + deviceTime + "\",\n" +
+                "      \"type\": \"string\"\n" +
+                "    },\n" +
+                "    \"receiveTime\": {\n" +
+                "      \"description\": \"ISO time string, stating when the app received measurement from device\",\n" +
+                "      \"value\": \"" + receiveTime + "\",\n" +
+                "      \"type\": \"string\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "}\n";
+    }
+
+    /**
+     * This method create a new JSON element with glucose measurement values.
+     */
+    private String setGlucoseInPHRDocument(String sequenceNumber, String concentration, String unit,
+                                           String fluidType, String sampleLocation, String sensorStatus,
+                                           String deviceTime, String receiveTime) {
+        return "{\n" +
+                "  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n" +
+                "  \"title\": \"Glucose Measurement\",\n" +
+                "  \"type\": \"object\",\n" +
+                "  \"properties\": {\n" +
+                "    \"sequenceNumber\": {\n" +
+                "      \"description\": \"internal measurement id given by the device\",\n" +
+                "      \"value\": \"" + sequenceNumber + "\",\n" +
+                "      \"type\": \"integer\",\n" +
+                "      \"minimum\": 0\n" +
+                "    },\n" +
+                "    \"deviceTime\": {\n" +
+                "      \"description\": \"ISO time string given by measurement device\",\n" +
+                "      \"value\": \"" + deviceTime + "\",\n" +
+                "      \"type\": \"string\"\n" +
+                "    },\n" +
+                "    \"receiveTime\": {\n" +
+                "      \"description\": \"ISO time string, stating when the app received measurement from device\",\n" +
+                "      \"value\": \"" + receiveTime + "\",\n" +
+                "      \"type\": \"string\"\n" +
+                "    },\n" +
+                "    \"concentration\": {\n" +
+                "      \"description\": \"how much glucose the device has measured in the given unit\",\n" +
+                "      \"value\": \"" + concentration + "\",\n" +
+                "      \"type\": \"number\",\n" +
+                "      \"minimum\": 0\n" +
+                "    },\n" +
+                "    \"unit\": {\n" +
+                "      \"description\": \"physical unit describing the glucose concentration\",\n" +
+                "      \"value\": \"" + unit + "\",\n" +
+                "      \"enum\": [\n" +
+                "        \"kg/L\",\n" +
+                "        \"mol/L\"\n" +
+                "      ]\n" +
+                "    },\n" +
+                "    \"fluidType\": {\n" +
+                "      \"description\": \"fluid type delivered to device\",\n" +
+                "      \"value\": \"" + fluidType + "\",\n" +
+                "      \"enum\": [\n" +
+                "        \"Capillary Whole blood\",\n" +
+                "        \"Capillary Plasma\",\n" +
+                "        \"Venous Whole blood\",\n" +
+                "        \"Venous Plasma\",\n" +
+                "        \"Arterial Whole blood\",\n" +
+                "        \"Arterial Plasma\",\n" +
+                "        \"Undetermined Whole blood\",\n" +
+                "        \"Undetermined Plasma\",\n" +
+                "        \"Interstitial Fluid (ISF)\",\n" +
+                "        \"Control Solution\"\n" +
+                "      ]\n" +
+                "    },\n" +
+                "    \"sampleLocation\": {\n" +
+                "      \"description\": \"body location the fluid was taken from\",\n" +
+                "      \"value\": \"" + sampleLocation + "\",\n" +
+                "      \"enum\": [\n" +
+                "        \"Finger\",\n" +
+                "        \"Alternate Site Test (AST)\",\n" +
+                "        \"Earlobe\",\n" +
+                "        \"Control solution\",\n" +
+                "        \"Sample Location value not available\"\n" +
+                "      ]\n" +
+                "    },\n" +
+                "    \"sensorStatus\": {\n" +
+                "      \"description\": \"technical annunciations by the measurement device\",\n" +
+                "      \"value\": \"" + sensorStatus + "\",\n" +
+                "      \"type\": \"array\",\n" +
+                "      \"uniqueItems\": true,\n" +
+                "      \"minItems\": 0,\n" +
+                "      \"items\": {\n" +
+                "        \"enum\": [\n" +
+                "          \"Device battery low at time of measurement\",\n" +
+                "          \"Sensor malfunction or faulting at time of measurement\",\n" +
+                "          \"Sample size for blood or control solution insufficient at time of measurement\",\n" +
+                "          \"Strip insertion error\",\n" +
+                "          \"Strip type incorrect for device\",\n" +
+                "          \"Sensor result higher than the device can process\",\n" +
+                "          \"Sensor result lower than the device can process\",\n" +
+                "          \"Sensor temperature too high for valid test/result at time of measurement\",\n" +
+                "          \"Sensor temperature too low for valid test/result at time of measurement\",\n" +
+                "          \"Sensor read interrupted because strip was pulled too soon at time of measurement\",\n" +
+                "          \"General device fault has occurred in the sensor\",\n" +
+                "          \"Time fault has occurred in the sensor and time may be inaccurate\"\n" +
+                "        ]\n" +
+                "      }\n" +
+                "    }\n" +
+                "  }\n" +
+                "}\n";
+    }
 }

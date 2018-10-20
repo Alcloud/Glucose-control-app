@@ -1,0 +1,30 @@
+------=_Part_{{PART_UUID}}
+{{{EMPTY_LINE}}}
+Content-Type: application/xop+xml; charset=UTF-8; type="application/soap+xml"; action="DocumentRepository_RetrieveDocumentSet"
+{{{EMPTY_LINE}}}
+Content-Transfer-Encoding: 8bit
+{{{EMPTY_LINE}}}
+Content-ID: <rootpart@soapui.org>
+{{{EMPTY_LINE}}}
+{{{EMPTY_LINE}}}
+
+<soap:Envelope xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+               xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+               xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+               xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+    <soap:Header xmlns:addr="http://www.w3.org/2005/08/addressing">
+        <addr:Action soap:mustUnderstand="1">urn:ihe:iti:2007:RetrieveDocumentSet</addr:Action>
+        <addr:MessageID>{{MESSAGE_UUID}}</addr:MessageID>
+    </soap:Header>
+    <s:Body xmlns:xdsb="urn:ihe:iti:xds-b:2007" xmlns:s="http://www.w3.org/2003/05/soap-envelope">
+        <xdsb:RetrieveDocumentSetRequest>
+            <xdsb:DocumentRequest>
+                <xdsb:RepositoryUniqueId>{{REPOSITORY_UNIQUE_ID}}</xdsb:RepositoryUniqueId>
+                <xdsb:DocumentUniqueId>{{DOCUMENT_UNIQUE_ID}}</xdsb:DocumentUniqueId>
+            </xdsb:DocumentRequest>
+        </xdsb:RetrieveDocumentSetRequest>
+    </s:Body>
+</soap:Envelope>
+
+{{{EMPTY_LINE}}}
+------=_Part_{{PART_UUID}}--

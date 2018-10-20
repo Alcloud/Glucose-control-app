@@ -3,21 +3,36 @@ image: git.credential.eu:8010/fokus/android-build-environment:latest
 before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./gradlew
+    - chmod +x gradlew
+    
+stages:
+  - build
+  - test
 
 cache:
+  key: "$CI_COMMIT_REF_NAME"
   paths:
-     - .gradle/wrapper
-     - .gradle/caches
-
+    - .gradle/wrapper
+    - .gradle/caches
+     
+####################################################################################################
+# BUILD
+    
 build:
   stage: build
   script:
-     - ./gradlew assemble
+    - ./gradlew assembleDebug --stacktrace --info
   artifacts:
     paths:
-     - app/build/outputs/
+      - app/build/outputs/
+      - target/*.apk
 
-#test:
-#  stage: test
-#  script:
-#    - ./gradlew check
+####################################################################################################
+# UNIT TESTING
+unit_test:
+  stage: test
+  only:
+    - master
+  script:
+    - ./gradlew test
+

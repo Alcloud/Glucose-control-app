@@ -1,63 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ap="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorBackground"
-    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_weight"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="?android:attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        ap:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        ap:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <LinearLayout
-        android:layout_height="43dp"
         android:layout_width="match_parent"
+        android:layout_height="43dp"
         android:background="@color/colorBackground"
         android:orientation="horizontal">
 
         <TextView
-            android:text="@string/zoomTextView"
-            android:textSize="20sp"
-            android:textColor="@color/colorPrimary"
+            android:id="@+id/zoomWeightText"
             style="@style/AppTheme"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:layout_weight="1"
-            android:id="@+id/zoomWeightText" />
+            android:gravity="center"
+            android:text="@string/zoomTextView"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
         <Spinner
+            android:id="@+id/spinnerPeriod"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:contentDescription="@string/period_spinner"
             android:layout_weight="0.6"
-            android:spinnerMode="dialog"
-            android:id="@+id/spinnerPeriod"/>
+            android:spinnerMode="dialog" />
 
         <ImageButton
+            android:id="@+id/share_weight"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:contentDescription="@string/share"
             android:layout_margin="4dp"
-            android:background="@color/colorBackground"
-            ap:srcCompat="@drawable/share"
-            android:id="@+id/share_blood"
-            android:scaleType="fitCenter"
-            android:onClick="onClickShare"
             android:adjustViewBounds="true"
-            android:cropToPadding="true"/>
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:cropToPadding="true"
+            android:onClick="onClickShare"
+            android:scaleType="fitCenter"
+            ap:srcCompat="@drawable/share"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
     <com.androidplot.xy.XYPlot
-        style="@style/APDefacto"
         android:id="@+id/plotZoom"
+        style="@style/APDefacto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="0.5"
-        ap:rangeTitle="@string/rangeZoom"
+        ap:lineLabelRotationBottom="-45"
         ap:lineLabels="left|bottom"
-        ap:lineLabelRotationBottom="-45"/>
+        ap:rangeTitle="@string/rangeZoom" />
 </LinearLayout>

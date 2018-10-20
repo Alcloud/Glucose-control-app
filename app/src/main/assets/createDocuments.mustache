@@ -1,0 +1,201 @@
+------=_Part_{{PART_UUID}}
+{{{EMPTY_LINE}}}
+
+Content-Type: application/xop+xml; charset=UTF-8; type="application/soap+xml"; action="DocumentRepository_ProvideAndRegisterDocumentSet-b"
+{{{EMPTY_LINE}}}
+Content-Transfer-Encoding: 8bit
+{{{EMPTY_LINE}}}
+Content-ID: <rootpart@test.org>
+{{{EMPTY_LINE}}}
+{{{EMPTY_LINE}}}
+
+<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope">
+    <s:Header xmlns:a="http://www.w3.org/2005/08/addressing">
+        <a:Action s:mustUnderstand="1">urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b</a:Action>
+        <a:MessageID s:mustUnderstand="1">{{MESSAGE_UUID}}</a:MessageID>
+    </s:Header>
+    <s:Body>
+        <xdsb:ProvideAndRegisterDocumentSetRequest xmlns:lcm="urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:rs="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0" xmlns:xdsb="urn:ihe:iti:xds-b:2007" xmlns:xop="http://www.w3.org/2004/08/xop/include">
+            <lcm:SubmitObjectsRequest>
+                <rim:RegistryObjectList>
+                    <!-- Submission Set -->
+                    <rim:RegistryPackage id="{{SUBMISSION_SET_ENTRY_UUID}}" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage">
+                        <rim:Slot name="submissionTime">
+                            <rim:ValueList>
+                                <rim:Value>{{SUBMISSION_SET_SUBMISSION_TIME}}</rim:Value>
+                            </rim:ValueList>
+                        </rim:Slot>
+                        <!-- SubmissionSet.contentTypeCode -->
+                        <rim:Classification classificationScheme="urn:uuid:aa543740-bdda-424e-8c96-df4873be8500" classifiedObject="{{SUBMISSION_SET_ENTRY_UUID}}" id="{{SUBMISSION_SET_CONTENT_TYPE_CODE_UUID}}" nodeRepresentation="11488-4" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification">
+                            <rim:Slot name="codingScheme">
+                                <rim:ValueList>
+                                    <rim:Value>2.16.840.1.113883.6.1</rim:Value>
+                                </rim:ValueList>
+                            </rim:Slot>
+                            <rim:Name>
+                                <rim:LocalizedString value="Consultation Note"/>
+                            </rim:Name>
+                        </rim:Classification>
+
+                        <rim:Classification classificationNode="urn:uuid:a54d6aa5-d40d-43f9-88c5-b4633d873bdd" classifiedObject="{{SUBMISSION_SET_ENTRY_UUID}}" id="{{SUBMISSION_SET_CLASSIFICATION_UUID}}" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"/>
+
+                        <rim:ExternalIdentifier id="{{SUBMISSION_SET_SOURCE_ID_UUID}}" identificationScheme="urn:uuid:554ac39e-e3fe-47fe-b233-965d2a147832" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="{{SUBMISSION_SET_ENTRY_UUID}}" value="1.3.6.1.4.1.21367.2012.2.1.1">
+                            <rim:Name>
+                                <rim:LocalizedString value="XDSSubmissionSet.sourceId"/>
+                            </rim:Name>
+                        </rim:ExternalIdentifier>
+
+                        <rim:ExternalIdentifier id="{{SUBMISSION_SET_UNIQUE_ID_UUID}}" identificationScheme="urn:uuid:96fdda7c-d067-4183-912e-bf5ee74998a8" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="{{SUBMISSION_SET_ENTRY_UUID}}" value="{{SUBMISSION_SET_UNIQUE_ID_VALUE}}">
+                            <rim:Name>
+                                <rim:LocalizedString value="XDSSubmissionSet.uniqueId"/>
+                            </rim:Name>
+                        </rim:ExternalIdentifier>
+
+                        <rim:ExternalIdentifier id="{{SUBMISSION_SET_PATIENT_ID_UUID}}" identificationScheme="urn:uuid:6b5aea1a-874d-4603-a4bc-96a0a7b38446" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="{{SUBMISSION_SET_ENTRY_UUID}}" value="{{PATIENT_ID}}">
+                            <rim:Name>
+                                <rim:LocalizedString value="XDSSubmissionSet.patientId"/>
+                            </rim:Name>
+                        </rim:ExternalIdentifier>
+                    </rim:RegistryPackage>
+
+
+                    <!-- DocumentEntry -->
+                    <rim:ExtrinsicObject id="{{NEW_DOCUMENT_ENTRY_UUID}}" mimeType="application/octet-stream" objectType="urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1" status="urn:oasis:names:tc:ebxml-regrep:StatusType:Approved">
+                        <rim:Slot name="languageCode">
+                            <rim:ValueList/>
+                        </rim:Slot>
+                        <rim:Slot name="creationTime">
+                            <rim:ValueList>
+                                <rim:Value>{{NEW_DOCUMENT_CREATION_TIME}}</rim:Value>
+                            </rim:ValueList>
+                        </rim:Slot>
+                        <rim:Slot name="sourcePatientId">
+                            <rim:ValueList>
+                                <rim:Value>{{PATIENT_ID}}</rim:Value>
+                            </rim:ValueList>
+                        </rim:Slot>
+                        <rim:Name>
+                            <rim:LocalizedString value="XDSDocument Entry 1"/>
+                        </rim:Name>
+
+                        <rim:Classification classificationScheme="urn:uuid:41a5887f-8865-4c09-adf7-e362475b143a" classifiedObject="{{NEW_DOCUMENT_ENTRY_UUID}}" id="{{NEW_DOCUMENT_CLASS_CODE_UUID}}" nodeRepresentation="{{NEW_DOCUMENT_CLASS_CODE_NODE_REPRESENTATION}}" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification">
+                            <rim:Slot name="codingScheme">
+                                <rim:ValueList>
+                                    <rim:Value>{{NEW_DOCUMENT_CLASS_CODE_SYSTEM}}</rim:Value>
+                                </rim:ValueList>
+                            </rim:Slot>
+                            <rim:Name>
+                                <rim:LocalizedString value="{{NEW_DOCUMENT_CLASS_CODE_LOCALIZED_STRING}}"/>
+                            </rim:Name>
+                        </rim:Classification>
+
+                        <rim:Classification classificationScheme="urn:uuid:f4f85eac-e6cb-4883-b524-f2705394840f" classifiedObject="{{NEW_DOCUMENT_ENTRY_UUID}}" id="{{NEW_DOCUMENT_CONFIDENTIALITY_CODE_UUID}}" nodeRepresentation="N" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification">
+                            <rim:Slot name="codingScheme">
+                                <rim:ValueList>
+                                    <rim:Value>2.16.840.1.113883.5.25</rim:Value>
+                                </rim:ValueList>
+                            </rim:Slot>
+                            <rim:Name>
+                                <rim:LocalizedString value="Normal"/>
+                            </rim:Name>
+                        </rim:Classification>
+
+                        <rim:Classification classificationScheme="urn:uuid:a09d5840-386c-46f2-b5ad-9c3699a4309d" classifiedObject="{{NEW_DOCUMENT_ENTRY_UUID}}" id="{{NEW_DOCUMENT_FORMAT_CODE_UUID}}" nodeRepresentation="{{NEW_DOCUMENT_FORMAT_CODE_NODE_REPRESENTATION}}" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification">
+                            <rim:Slot name="codingScheme">
+                                <rim:ValueList>
+                                    <rim:Value>{{NEW_DOCUMENT_FORMAT_CODE_SYSTEM}}</rim:Value>
+                                </rim:ValueList>
+                            </rim:Slot>
+                            <rim:Name>
+                                <rim:LocalizedString value="{{NEW_DOCUMENT_FORMAT_CODE_LOCALIZED_STRING}}"/>
+                            </rim:Name>
+                        </rim:Classification>
+
+                        <rim:Classification classificationScheme="urn:uuid:f33fb8ac-18af-42cc-ae0e-ed0b0bdb91e1" classifiedObject="{{NEW_DOCUMENT_ENTRY_UUID}}" id="{{NEW_DOCUMENT_HCF_TYPE_CODE_UUID}}" nodeRepresentation="{{NEW_DOCUMENT_HCF_TYPE_CODE_NODE_REPRESENTATION}}" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification">
+                            <rim:Slot name="codingScheme">
+                                <rim:ValueList>
+                                    <rim:Value>{{NEW_DOCUMENT_HCF_TYPE_CODE_SYSTEM}}</rim:Value>
+                                </rim:ValueList>
+                            </rim:Slot>
+                            <rim:Name>
+                                <rim:LocalizedString value="{{NEW_DOCUMENT_HCF_TYPE_CODE_LOCALIZED_STRING}}"/>
+                            </rim:Name>
+                        </rim:Classification>
+
+                        <rim:Classification classificationScheme="urn:uuid:cccf5598-8b07-4b77-a05e-ae952c785ead" classifiedObject="{{NEW_DOCUMENT_ENTRY_UUID}}" id="{{NEW_DOCUMENT_PRACTICE_SETTING_CODE_UUID}}" nodeRepresentation="{{NEW_DOCUMENT_PRACTICE_SETTING_CODE_NODE_REPRESENTATION}}" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification">
+                            <rim:Slot name="codingScheme">
+                                <rim:ValueList>
+                                    <rim:Value>{{NEW_DOCUMENT_PRACTICE_SETTING_CODE_SYSTEM}}</rim:Value>
+                                </rim:ValueList>
+                            </rim:Slot>
+                            <rim:Name>
+                                <rim:LocalizedString value="{{NEW_DOCUMENT_PRACTICE_SETTING_CODE_LOCALIZED_STRING}}"/>
+                            </rim:Name>
+                        </rim:Classification>
+
+                        <rim:Classification classificationScheme="urn:uuid:f0306f51-975f-434e-a61c-c59651d33983" classifiedObject="{{NEW_DOCUMENT_ENTRY_UUID}}" id="{{NEW_DOCUMENT_TYPE_CODE_UUID}}" nodeRepresentation="{{NEW_DOCUMENT_TYPE_CODE_NODE_REPRESENTATION}}" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification">
+                            <rim:Slot name="codingScheme">
+                                <rim:ValueList>
+                                    <rim:Value>{{NEW_DOCUMENT_TYPE_CODE_SYSTEM}}</rim:Value>
+                                </rim:ValueList>
+                            </rim:Slot>
+                            <rim:Name>
+                                <rim:LocalizedString value="{{NEW_DOCUMENT_TYPE_CODE_LOCALIZED_STRING}}"/>
+                            </rim:Name>
+                        </rim:Classification>
+
+                        <rim:ExternalIdentifier id="{{NEW_DOCUMENT_UNIQUE_ID_UUID}}" identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="{{NEW_DOCUMENT_ENTRY_UUID}}" value="{{NEW_DOCUMENT_UNIQUE_ID_VALUE}}">
+                            <rim:Name>
+                                <rim:LocalizedString value="XDSDocumentEntry.uniqueId"/>
+                            </rim:Name>
+                        </rim:ExternalIdentifier>
+
+                        <rim:ExternalIdentifier id="{{NEW_DOCUMENT_PATIENT_ID_UUID}}" identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" registryObject="{{NEW_DOCUMENT_ENTRY_UUID}}" value="{{PATIENT_ID}}">
+                            <rim:Name>
+                                <rim:LocalizedString value="XDSDocumentEntry.patientId"/>
+                            </rim:Name>
+                        </rim:ExternalIdentifier>
+                    </rim:ExtrinsicObject>
+
+                    <!-- Zuordnung des neuen Dokuments zum Submission Set -->
+                    <rim:Association associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember" id="{{ASSOCIATION_SUBMISSION_SET_NEW_DOCUMENT_UUID}}" sourceObject="{{SUBMISSION_SET_ENTRY_UUID}}" targetObject="{{NEW_DOCUMENT_ENTRY_UUID}}">
+                        <rim:Slot name="SubmissionSetStatus">
+                            <rim:ValueList>
+                                <rim:Value>Original</rim:Value>
+                            </rim:ValueList>
+                        </rim:Slot>
+                    </rim:Association>
+
+                    <!-- HasMember : Folder to DocumentEntry -->
+                    <rim:Association associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember" id="{{ASSOCIATION_EXISTING_FOLDER_NEW_DOCUMENT_UUID}}" sourceObject="{{EXISTING_FOLDER_ENTRY_UUID}}" targetObject="{{NEW_DOCUMENT_ENTRY_UUID}}"/>
+
+                    <!-- HasMember : SubmissionSet to HasMember -->
+                    <rim:Association associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember" id="{{ASSOCIATION_SUBMISSION_SET_ASSOCIATION_UUID}}" sourceObject="{{SUBMISSION_SET_ENTRY_UUID}}" targetObject="{{ASSOCIATION_EXISTING_FOLDER_NEW_DOCUMENT_UUID}}"/>
+
+                </rim:RegistryObjectList>
+            </lcm:SubmitObjectsRequest>
+
+            <!-- Das neue Dokument – Verweis auf multipart/related-->
+            <xdsb:Document id="{{NEW_DOCUMENT_ENTRY_UUID}}">
+                <xop:Include href="cid:http://www.test.org/6670108217442"/>
+            </xdsb:Document>
+        </xdsb:ProvideAndRegisterDocumentSetRequest>
+    </s:Body>
+</s:Envelope>
+{{{EMPTY_LINE}}}
+{{{EMPTY_LINE}}}
+------=_Part_{{PART_UUID}}
+{{{EMPTY_LINE}}}
+Content-Type: application/octet-stream
+{{{EMPTY_LINE}}}
+Content-Transfer-Encoding: binary
+{{{EMPTY_LINE}}}
+Content-ID: <http://www.test.org/6670108217442>
+{{{EMPTY_LINE}}}
+{{{EMPTY_LINE}}}
+
+{{{DOCUMENT_CONTENT}}}
+
+{{{EMPTY_LINE}}}
+{{{EMPTY_LINE}}}
+------=_Part_{{PART_UUID}}--

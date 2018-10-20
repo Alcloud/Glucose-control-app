@@ -9,14 +9,19 @@ import android.webkit.WebView;
 
 import com.example.administrator.credential_v020.R;
 
+/**
+ * Created by Aleksei Piatkin on 05.04.17.
+ * <p>
+ * A clinical document screen that can shows documents in different formats.
+ */
 public class DocumentClinicalActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_document_clinical);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_document);
-        WebView webView = (WebView) findViewById(R.id.image_document);
+        Toolbar toolbar = findViewById(R.id.toolbar_document);
+        WebView webView = findViewById(R.id.image_document);
 
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);

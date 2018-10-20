@@ -4,18 +4,35 @@ android {
     packagingOptions {
         pickFirst 'LICENSE-EDL-1.0.txt'
         pickFirst 'LICENSE-EPL-1.0.txt'
+        pickFirst 'rapidssl.crt'
+        pickFirst 'dstroot.crt'
+        pickFirst 'dev-digicert.crt'
+        pickFirst 'credentialdocker.crt'
+        pickFirst 'letsencrypt.crt'
+        pickFirst 'dev-rapidssl.crt'
+        pickFirst 'dev-credentialdocker.crt'
+        pickFirst 'digicert.crt'
+        pickFirst 'credentialdocker2.crt'
+        pickFirst 'readme.html'
+        pickFirst 'license.html'
+        pickFirst 'META-INF/eclipse.inf'
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/project.properties'
+        exclude 'org/glassfish/jersey/internal/build.properties'
+        exclude 'org/glassfish/jersey/client/internal/localization.properties'
+        exclude 'org/glassfish/jersey/client/ClientConfig$State$2'
+        exclude 'org/glassfish/jersey/internal/localization.properties'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildToolsVersion '25.0.2'
-    compileSdkVersion 25
+    buildToolsVersion '27.0.3'
+    compileSdkVersion 27
     configurations.all {
         resolutionStrategy.force 'junit:junit:4.12'
         resolutionStrategy {
@@ -24,15 +41,12 @@ android {
     }
     defaultConfig {
         applicationId "eu.credential.app.patient"
-        multiDexEnabled true
         minSdkVersion 24
-        targetSdkVersion 25
+        targetSdkVersion 24
+        //multiDexEnabled true
         versionCode 1
-        versionName "1.0"
+        versionName "0.9.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        jackOptions {
-            enabled true
-        }
     }
     buildTypes {
         release {
@@ -43,29 +57,96 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.androidplot:androidplot-core:1.4.2'
-    compile 'joda-time:joda-time:2.9.7'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.google.zxing:core:3.3.0'
-    compile 'com.android.support:support-vector-drawable:25.3.1'
-    compile 'com.googlecode.json-simple:json-simple:1.1.1'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'net.hockeyapp.android:HockeySDK:4.0.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.firebase:firebase-core:10.0.0'
-    compile 'com.google.firebase:firebase-messaging:10.0.0'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.4'
-    compile 'com.android.volley:volley:1.0.0'
-    testCompile 'junit:junit:4.12'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:multidex:1.0.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:support-vector-drawable:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.android.volley:volley:1.0.0'
+    /* mostly needed for json parsing */
+    implementation 'org.glassfish:javax.json:1.0.4'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    /* needed for accessing remote web services */
+    implementation 'javax.ws.rs:javax.ws.rs-api:2.1'
+    /* for crypto stuff updated the crypto libs*/
+    implementation 'at.iaik:credential-crypto:0.1.7'
+    implementation 'at.iaik:pre-rs-formats:0.1.7'
+    implementation 'at.iaik:pre-rs-lib:0.1.7'
+    implementation 'at.iaik:jce:5.52'
+    implementation 'at.iaik:eccelerate:4.01'
+    implementation 'at.iaik:eccelerate_addon:4.01'
+    /* google firebase cloud messaging*/
+    implementation 'com.google.firebase:firebase-core:15.0.2'
+    implementation 'com.google.firebase:firebase-messaging:15.0.2'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    /* plot */
+    implementation 'com.androidplot:androidplot-core:1.5.3'
+
+    /* for circle ImageView */
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    /* date time formatter */
+    implementation 'joda-time:joda-time:2.9.7'
+    /* transitive requirement */
+    implementation('org.glassfish.jersey.core:jersey-client:2.22.2') { //transitive dependency
+        exclude module: 'javax.inject' // provided by other dependency
+    }
+    implementation 'javax.inject:javax.inject:1'
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    /* openAm auth */
+    implementation 'eu.credential.wallet:openam-client:1.0.34-SNAPSHOT'
+    implementation('eu.credential.accessmanagement:accessManagementClient:1.2.4') {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+        exclude group: "javax.xml.stream"
+    }
+    /* mustache for android */
+    implementation 'com.samskivert:jmustache:1.14'
+
+    implementation 'eu.credential.phr:phr-utils:1.0.0'
+    implementation('eu.credential.dms.common:dms-common-lib:0.3.1') {
+        exclude module: 'javax.inject'
+        exclude module: 'org.glassfish.jersey.core'
+        exclude module: 'org.glassfish.jersey.media'
+        exclude module: 'com.fasterxml.jackson.core'
+        exclude module: 'at.iaik'
+    }
+    implementation('eu.atos.credential:policy-helper-jackson:1.0.22') { //transitive dependency
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
+        exclude group: 'com.fasterxml.woodstox'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
+        exclude group: 'com.fasterxml.jackson.core'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-module-jaxb-annotations'
+        exclude module: 'javax.inject' // provided by other dependency
+    }
+    implementation 'com.squareup.retrofit2:retrofit:2.0.2'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    // dependencies for testing
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.8.9'
+    androidTestImplementation 'com.android.support:support-annotations:27.1.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    testImplementation 'org.json:json:20180130'
+    androidTestImplementation 'org.awaitility:awaitility:3.1.2'
+    // for UI testing
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
+    androidTestImplementation 'org.hamcrest:hamcrest-core:1.3'
+}
+
+configurations {
+    compile {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+        exclude group: 'javax.xml.stream'
+        exclude group: 'javax.xml.stream', module: 'stax-api'
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'

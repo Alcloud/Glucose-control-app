@@ -7,11 +7,17 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_refresh"
+        android:orderInCategory="97"
+        android:icon="@drawable/refresh"
+        android:title="@string/refresh"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/action_camera"
         android:orderInCategory="99"
         android:icon="@drawable/camera"
         android:title="@string/action_camera"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_address_book"
         android:orderInCategory="98"

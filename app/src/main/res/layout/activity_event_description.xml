@@ -10,100 +10,107 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_event_description"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="?android:attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <LinearLayout
         android:id="@+id/first_line_event"
-        android:layout_below="@+id/toolbar_event_description"
-        android:layout_height="150dp"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_margin="10dp"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar_event_description"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/bell"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_weight="1"
+            android:contentDescription="@string/participant_photo"
             android:scaleType="fitCenter"
-            android:id="@+id/imageView" />
+            app:srcCompat="@drawable/bell" />
+
         <LinearLayout
-            android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
-        <TextView
-            android:text="12 october 2016"
-            android:textSize="24sp"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView_event_date"
-            android:layout_weight="1" />
+
             <TextView
-                android:text="Sam Smith want to add data:"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:textStyle="bold"
+                android:id="@+id/textView_event_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView_event_name"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:text="@string/date"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:ignore="NestedWeights" />
 
+            <TextView
+                android:id="@+id/textView_event_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/text"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
     <View
         android:id="@+id/line"
-        android:layout_below="@+id/first_line_event"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginRight="8dp"
+        android:layout_below="@+id/first_line_event"
         android:layout_marginLeft="8dp"
-        android:background="@color/colorPrimary"/>
+        android:layout_marginRight="8dp"
+        android:background="@color/colorPrimary" />
+
     <LinearLayout
         android:id="@+id/event_text"
-        android:layout_below="@+id/line"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/line"
         android:gravity="bottom"
         android:orientation="vertical">
+
         <TextView
-            android:text="@string/event_void"
+            android:id="@+id/text_event_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:id="@+id/text_event_description"/>
+            android:text="@string/event_void" />
+
         <LinearLayout
-            android:layout_below="@+id/event_text"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:orientation="horizontal">
 
             <Button
-                android:text="@string/reject"
+                android:id="@+id/button_event_reject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/button_event_reject"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:text="@string/reject"
+                tools:ignore="ButtonStyle" />
 
             <Button
-                android:text="@string/allow"
+                android:id="@+id/button_event_allow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/button_event_allow"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:text="@string/allow"
+                tools:ignore="ButtonStyle" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

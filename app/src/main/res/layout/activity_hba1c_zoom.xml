@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_hba1c"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="?android:attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:background="@color/colorBackground"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/zoomWeightText"
+            style="@style/AppTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/zoomTextView"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/spinner_period_hba1c"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/period_spinner"
+            android:layout_weight="0.6"
+            android:spinnerMode="dialog" />
+
+        <ImageButton
+            android:id="@+id/share_hba1c"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:adjustViewBounds="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/share"
+            android:cropToPadding="true"
+            android:onClick="onClickShare"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/share" />
+
+    </LinearLayout>
+
+    <com.androidplot.xy.XYPlot
+        android:id="@+id/plotZoomHBA1c"
+        style="@style/APDefacto"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        app:lineLabelRotationBottom="-45"
+        app:lineLabels="left|bottom" />
+</LinearLayout>

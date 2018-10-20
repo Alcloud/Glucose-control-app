@@ -1,6 +1,8 @@
 package eu.credential.app.patient.orchestration.http;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -8,14 +10,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.ArrayList;
 
-public class UpdateParticipantData extends AsyncTask<String, Void, Void> {
+import eu.credential.app.patient.PatientApp;
+import eu.credential.app.patient.helper.SavePreferences;
+import eu.credential.app.patient.helper.SetURLConnection;
+
+/**
+ * Created by Aleksei Piatkin on 13.11.17.
+ * <p>
+ * This class helps to update participant data.
+ * Participant data: address book, user details
+ */
+public class UpdateParticipantData extends AsyncTask<String, String, Void> {
+
+    private static final String TAG = "Performance";
 
     private String doctorId;
     private String doctorName;
@@ -23,122 +34,245 @@ public class UpdateParticipantData extends AsyncTask<String, Void, Void> {
     private String doctorMainRole;
     private String doctorRole;
     private String doctorCity;
-    private String accountId;
-    private String operationId = "";
-    JSONArray array;
+    private String dataId;
+    private String operationId;
+    private String[] fileContent;
+    private JSONArray array;
     private ProgressDialog dialog;
+    @SuppressLint("StaticFieldLeak")
+    private Context context;
+    private ArrayList<String> arrayList = new ArrayList<>();
 
-    private static final String GET_PARTICIPANT_URL = "http://194.95.174.238:8081/dms/data/";
-
-    public UpdateParticipantData(JSONArray array, String doctorId, String accountId, String doctorName,
-                                 String doctorSurname, String doctorCity, String doctorMainRole, String doctorRole) {
-        super();
-        this.array = array;
-        this.doctorId = doctorId;
-        this.accountId = accountId;
-        this.doctorName = doctorName;
-        this.doctorSurname = doctorSurname;
-        this.doctorMainRole = doctorMainRole;
-        this.doctorCity = doctorCity;
-        this.doctorRole = doctorRole;
-    }
-
-    public UpdateParticipantData(JSONArray array, String accountId, String operationId) {
-        super();
-        this.array = array;
-        this.accountId = accountId;
-        this.operationId = operationId;
+    private UpdateParticipantData(final UpdateParticipantBuilder updateParticipantBuilder) {
+        this.doctorId = updateParticipantBuilder.getDoctorId();
+        this.doctorName = updateParticipantBuilder.getDoctorName();
+        this.doctorSurname = updateParticipantBuilder.getDoctorSurname();
+        this.doctorMainRole = updateParticipantBuilder.getDoctorMainRole();
+        this.doctorRole = updateParticipantBuilder.getDoctorRole();
+        this.doctorCity = updateParticipantBuilder.getDoctorCity();
+        this.dataId = updateParticipantBuilder.getDataId();
+        this.operationId = updateParticipantBuilder.getOperationId();
+        this.fileContent = updateParticipantBuilder.getFileContent();
+        this.array = updateParticipantBuilder.getArray();
+        this.context = updateParticipantBuilder.getContext();
     }
 
     @Override
     protected void onPreExecute() {
-        dialog.setMessage("Doing something, please wait.");
-        dialog.show();
+        if (context != null) {
+            dialog = ProgressDialog.show(context, "Saving settings...", "Please wait");
+            dialog.setCanceledOnTouchOutside(true);
+        }
     }
 
     @Override
     protected Void doInBackground(String... params) {
         JSONObject requestMessage;
-
+        new SetURLConnection.SetURLConnectionBuilder()
+                .protocol("dms.protocol")
+                .host("dms.host")
+                .path("dms.path").build();
         try {
-            URL url2 = new URL(GET_PARTICIPANT_URL + accountId);
-            HttpURLConnection httpURLConnection2 = (HttpURLConnection) url2.openConnection();
-            httpURLConnection2.setDoOutput(true);
-            httpURLConnection2.setRequestMethod("DELETE");
-            httpURLConnection2.setRequestProperty("Content-Type", "application/json");
-            httpURLConnection2.connect();
-            Log.d("Update_participant", String.valueOf(httpURLConnection2.getResponseCode()));
+            long startTime = System.nanoTime();
 
-            URL url = new URL(GET_PARTICIPANT_URL + accountId);
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setDoOutput(true);
-            httpURLConnection.setRequestMethod("PUT");
-            httpURLConnection.setRequestProperty("Content-Type", "application/json");
-            httpURLConnection.connect();
-
-            if (operationId.equals("delete")) {
-                operationId = "";
-            } else {
-                JSONObject object = new JSONObject("{\n" +
-                        "                    \"id\": \"" + doctorId + "\",\n" +
-                        "                    \"name\": \"" + doctorName + "\",\n" +
-                        "                    \"surname\": \"" + doctorSurname + "\",\n" +
-                        "                    \"city\": \"" + doctorCity + "\",\n" +
-                        "                    \"mainrole\": \"" + doctorMainRole + "\",\n" +
-                        "                    \"role\":\"" + doctorRole + "\"\n" +
-                        "                }\n");
-                array.put(object);
-                Log.d("Update participant", "doctorArray: " + array.toString());
+            if (operationId.equals("addressBook") || operationId.equals("delete")) {
+                for (int i = 0; i < array.length(); i++) {
+                    String object = "\"{" + "\\" + "\"id" + "\\" + "\":" + "\\" + "\"" + array.getJSONObject(i).getString("id") + "\\" + "\"," +
+                            "\\" + "\"name" + "\\" + "\":" + "\\" + "\"" + array.getJSONObject(i).getString("name") + "\\" + "\"," +
+                            "\\" + "\"surname" + "\\" + "\":" + "\\" + "\"" + array.getJSONObject(i).getString("surname") + "\\" + "\"," +
+                            "\\" + "\"city" + "\\" + "\":" + "\\" + "\"" + array.getJSONObject(i).getString("city") + "\\" + "\"," +
+                            "\\" + "\"mainrole" + "\\" + "\":" + "\\" + "\"" + array.getJSONObject(i).getString("mainrole") + "\\" + "\"," +
+                            "\\" + "\"role" + "\\" + "\": [" + "\\" + "\"" + array.getJSONObject(i).getJSONArray("role").getString(0) +
+                            "\\" + "\"," + "\\" + "\"" + array.getJSONObject(i).getJSONArray("role").getString(1) + "\\" + "\"" + "]," +
+                            "\\" + "\"access" + "\\" + "\":{" +
+                            "\\" + "\"editdocument" + "\\" + "\":" + "\\" + "\"" + array.getJSONObject(i).getJSONObject("access").getString("editdocument") + "\\" + "\"," +
+                            "\\" + "\"sendmessage" + "\\" + "\":" + "\\" + "\"" + array.getJSONObject(i).getJSONObject("access").getString("sendmessage") + "\\" + "\"}}\"";
+                    arrayList.add(object);
+                }
+                if (operationId.equals("addressBook")) {
+                    String newObject = "\"{" + "\\" + "\"id" + "\\" + "\":" + "\\" + "\"" + doctorId + "\\" + "\"," +
+                            "\\" + "\"name" + "\\" + "\":" + "\\" + "\"" + doctorName + "\\" + "\"," +
+                            "\\" + "\"surname" + "\\" + "\":" + "\\" + "\"" + doctorSurname + "\\" + "\"," +
+                            "\\" + "\"city" + "\\" + "\":" + "\\" + "\"" + doctorCity + "\\" + "\"," +
+                            "\\" + "\"mainrole" + "\\" + "\":" + "\\" + "\"" + doctorMainRole + "\\" + "\"," +
+                            "\\" + "\"role" + "\\" + "\": [" + "\\" + "\"" + doctorRole + "\\" + "\"," + "\\" + "\"" + doctorRole + "\\" + "\"" + "]," +
+                            "\\" + "\"access" + "\\" + "\":{" +
+                            "\\" + "\"editdocument" + "\\" + "\":" + "\\" + "\"false" + "\\" + "\"," +
+                            "\\" + "\"sendmessage" + "\\" + "\":" + "\\" + "\"false" + "\\" + "\"}}\"";
+                    arrayList.add(newObject);
+                    Log.d("Update_participant", "doctorArray: " + arrayList.toString());
+                }
             }
-            requestMessage = new JSONObject("{\n" +
-                    "\t\"metadata\": {\n" +
-                    "\t\t\"identifier\":{\n" +
-                    "\t\t\t\"dataId\":\"" + accountId + "\",\n" +
-                    "\t\t\t\"parentId\":\"-\",\n" +
-                    "\t\t\t\"ownerId\":\"4321\",\n" +
-                    "\t\t\t\"dataType\":\"file\"\n" +
-                    "\t\t},\n" +
-                    "\t\t\"generic\":{\n" +
-                    "\t\t\t\"name\":\"testFile1\",\n" +
-                    "\t\t\t\"creationDate\":\"Mon Sep 11 13:42:26 GMT 2017\",\n" +
-                    "\t\t\t\"lastModificationDate\":\"Mon Sep 11 13:42:26 GMT 2017\"\n" +
-                    "\t\t},\n" +
-                    "\t\t\"appSpecific\":{\n" +
-                    "\t\t\t\"addressbook\":" + array.toString() +
-                    "\t\t},\n" +
-                    "\t\t\"tags\":[],\n" +
-                    "\t\t\n" +
-                    "\t\t\"fileSpecific\":{\n" +
-                    "\t\t\n" +
-                    "\t\t},\n" +
-                    "\t\t\"signature\":{\n" +
-                    "\t\t\n" +
-                    "\t\t}\n" +
-                    "\t},\n" +
-                    "\t\"fileContent\":[],\n" +
-                    "\t\"replace\":true\n" +
-                    "}");
-            Log.d("Update_participant", "requestMessage: " + requestMessage.toString());
+            if (operationId.equals("phrKey")) {
+                arrayList.clear();
+                for (String aFileContent : fileContent) {
+                    arrayList.add("\"" + aFileContent + "\"");
+                }
+            }
+            if (operationId.equals("userDetails")) {
+                String userDetails = "\"{" + "\\" + "\"name" + "\\" + "\":" + "\\" + "\"" + doctorName +
+                        "\\" + "\"," + "\\" + "\"surname" + "\\" + "\":" + "\\" + "\"" + doctorSurname +
+                        "\\" + "\"," + "\\" + "\"city" + "\\" + "\":" + "\\" + "\"" + doctorCity +
+                        "\\" + "\"," + "\\" + "\"email" + "\\" + "\":" + "\\" + "\"" + doctorMainRole + "\\" + "\"}\"";
+                arrayList.clear();
+                arrayList.add(userDetails);
+            }
 
-            OutputStreamWriter osw = new OutputStreamWriter(httpURLConnection.getOutputStream());
-            osw.write(requestMessage.toString());
-            osw.close();
-            httpURLConnection.getInputStream();
+            requestMessage = new JSONObject("{\"fileContent\":" + arrayList.toString() + "}");
+
+            HttpURLConnection httpURLConnection = SetURLConnection.setConnection("POST",
+                    "data/" + dataId, requestMessage.toString());
+
+            Log.d("Update_participant", "requestMessage: " + requestMessage.toString());
+            long endTime = System.nanoTime();
+            Log.i(TAG, "-|Update participant|" + SetURLConnection.setURL() + "/data/" + "|"
+                    + dataId + "|" + startTime / 1000000 + "|" + (endTime - startTime) / 1000000 +
+                    "|" + httpURLConnection.getResponseCode());
 
             if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-
-            } else {
-                Log.d("Update_participant", "no connection");
+                publishProgress("Connection successful");
+                if (operationId.equals("userDetails")) {
+                    SavePreferences.setDefaultsString("userName", doctorName, PatientApp.getContext());
+                    SavePreferences.setDefaultsString("userSurname", doctorSurname, PatientApp.getContext());
+                }
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    @Override
+    protected void onProgressUpdate(String... values) {
+        super.onProgressUpdate(values);
+        if (values[0] != null && dialog != null) {
+            dialog.setMessage(values[0]);
+        }
+    }
+
+    @Override
     protected void onPostExecute(Void result) {
-        // do UI work here
-        if (dialog.isShowing()) {
-            dialog.dismiss();
+        if (dialog != null) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }
+    }
+
+    public static class UpdateParticipantBuilder {
+        private String doctorId;
+        private String doctorName;
+        private String doctorSurname;
+        private String doctorMainRole;
+        private String doctorRole;
+        private String doctorCity;
+        private String dataId;
+        private String operationId;
+        private Context context;
+        private String[] fileContent;
+        private JSONArray array;
+
+        public UpdateParticipantBuilder doctorId(final String doctorId) {
+            this.doctorId = doctorId;
+            return this;
+        }
+
+        public UpdateParticipantBuilder doctorName(final String doctorName) {
+            this.doctorName = doctorName;
+            return this;
+        }
+
+        public UpdateParticipantBuilder doctorSurname(final String doctorSurname) {
+            this.doctorSurname = doctorSurname;
+            return this;
+        }
+
+        public UpdateParticipantBuilder doctorMainRole(final String doctorMainRole) {
+            this.doctorMainRole = doctorMainRole;
+            return this;
+        }
+
+        public UpdateParticipantBuilder doctorRole(final String doctorRole) {
+            this.doctorRole = doctorRole;
+            return this;
+        }
+
+        public UpdateParticipantBuilder doctorCity(final String doctorCity) {
+            this.doctorCity = doctorCity;
+            return this;
+        }
+
+        public UpdateParticipantBuilder dataId(final String dataId) {
+            this.dataId = dataId;
+            return this;
+        }
+
+        public UpdateParticipantBuilder operationId(final String operationId) {
+            this.operationId = operationId;
+            return this;
+        }
+
+        UpdateParticipantBuilder fileContent(final String[] fileContent) {
+            this.fileContent = fileContent;
+            return this;
+        }
+
+        public UpdateParticipantBuilder array(final JSONArray array) {
+            this.array = array;
+            return this;
+        }
+
+        public UpdateParticipantBuilder context(final Context context) {
+            this.context = context;
+            return this;
+        }
+
+        String getDoctorId() {
+            return doctorId;
+        }
+
+        String getDoctorName() {
+            return doctorName;
+        }
+
+        String getDoctorSurname() {
+            return doctorSurname;
+        }
+
+        public String getDataId() {
+            return dataId;
+        }
+
+        String getDoctorMainRole() {
+            return doctorMainRole;
+        }
+
+        String getDoctorRole() {
+            return doctorRole;
+        }
+
+        String getDoctorCity() {
+            return doctorCity;
+        }
+
+        public String getOperationId() {
+            return operationId;
+        }
+
+        String[] getFileContent() {
+            return fileContent;
+        }
+
+        public JSONArray getArray() {
+            return array;
+        }
+
+        public Context getContext() {
+            return context;
+        }
+
+        public UpdateParticipantData build() {
+            return new UpdateParticipantData(this);
         }
     }
 }

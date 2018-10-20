@@ -10,8 +10,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_doctor_details"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="?android:attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
@@ -31,6 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:contentDescription="@string/participant_photo"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/doctor" />
 
@@ -51,7 +52,7 @@
                     android:id="@+id/textView_doctor_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name"
+                    android:text="@string/name"
                     android:textColor="@color/colorPrimary"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -60,8 +61,8 @@
                     android:id="@+id/textView_doctor_surname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name"
-                    android:layout_marginLeft="6dp"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/name"
                     android:textColor="@color/colorPrimary"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -72,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Diabetologist"
+                android:text="@string/role"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -81,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Berlin"
+                android:text="@string/city"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
@@ -120,7 +121,7 @@
             android:layout_gravity="center"
             android:layout_margin="7dp"
             android:adjustViewBounds="true"
-            android:background="@color/colorBackground"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/action_add_to"
             android:cropToPadding="true"
             android:onClick="onClickAdd"

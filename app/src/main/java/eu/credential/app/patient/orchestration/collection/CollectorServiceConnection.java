@@ -4,6 +4,11 @@ import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
+import org.json.JSONException;
+
+import java.text.ParseException;
+import java.util.concurrent.ExecutionException;
+
 
 /**
  * Specialized service connection, which is drawn between the user interface and the service wo
@@ -13,7 +18,6 @@ public class CollectorServiceConnection implements ServiceConnection {
 
     // the parental service consumer
     private WithCollectorService withCollectorService;
-    private final String TAG = CollectorServiceConnection.class.getSimpleName();
 
     public CollectorServiceConnection(WithCollectorService withCollectorService) {
         this.withCollectorService = withCollectorService;
@@ -30,11 +34,19 @@ public class CollectorServiceConnection implements ServiceConnection {
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder service) {
         CollectorService collectorService = ((CollectorService.LocalBinder) service).getService();
-        withCollectorService.setCollectorService(collectorService);
+        try {
+            withCollectorService.setCollectorService(collectorService);
+        } catch (InterruptedException | JSONException | ExecutionException | ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onServiceDisconnected(ComponentName componentName) {
-        withCollectorService.setCollectorService(null);
+        try {
+            withCollectorService.setCollectorService(null);
+        } catch (ParseException | JSONException | ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

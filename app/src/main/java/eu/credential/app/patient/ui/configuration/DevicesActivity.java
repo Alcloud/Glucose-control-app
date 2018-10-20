@@ -14,18 +14,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.credential_v020.R;
+
+import java.util.Objects;
+
 import eu.credential.app.patient.orchestration.collection.CollectorBroadcastReceiver;
 import eu.credential.app.patient.orchestration.collection.CollectorService;
 import eu.credential.app.patient.orchestration.collection.CollectorServiceConnection;
 import eu.credential.app.patient.orchestration.collection.WithCollectorService;
-import eu.credential.app.patient.ui.settings.SettingsBroadcastReceiver;
 import eu.credential.app.patient.integration.upload.UploadBroadcastReceiver;
-import eu.credential.app.patient.ui.diary.DiaryFragment;
 
-public class DevicesActivity extends AppCompatActivity implements WithCollectorService{
-
-    // tag used for android logging
-    private static final String TAG = DiaryFragment.class.getSimpleName();
+/**
+ * Created by Aleksei Piatkin on 02.05.17.
+ * <p>
+ * A device screen that offers to choose and connect bluetooth devices.
+ */
+public class DevicesActivity extends AppCompatActivity implements WithCollectorService {
     private LocalBroadcastManager localBroadcastManager;
 
     // Services the activity works with
@@ -33,20 +36,17 @@ public class DevicesActivity extends AppCompatActivity implements WithCollectorS
     private CollectorServiceConnection collectorServiceConnection;
     private CollectorBroadcastReceiver collectorBroadcastReceiver;
     private UploadBroadcastReceiver uploadBroadcastReceiver;
-    private SettingsBroadcastReceiver settingsBroadcastReceiver;
 
     //Glucometer UI definition
-    ImageView glucometer;
-    ImageView paringGlucometer;
-    ImageView searchGlucometer;
-    TextView textGlucometer;
-    TextView textGlucometerName;
+    private ImageView glucometer;
+    private ImageView searchGlucometer;
+    private TextView textGlucometer;
+    private TextView textGlucometerName;
     //Scale UI definition
-    ImageView scale;
-    ImageView paringScale;
-    ImageView searchScale;
-    TextView textScale;
-    TextView textScaleName;
+    private ImageView scale;
+    private ImageView searchScale;
+    private TextView textScale;
+    private TextView textScaleName;
 
     public DevicesActivity() {
         super();
@@ -57,23 +57,22 @@ public class DevicesActivity extends AppCompatActivity implements WithCollectorS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_devices);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_devices);
+
+        Toolbar toolbar = findViewById(R.id.toolbar_devices);
         toolbar.setTitle(R.string.diary_toolbar_devices);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.mipmap.ic_arrow_back);
         toolbar.setNavigationOnClickListener(v -> finish());
         //Glucometer UI identification
-        glucometer = (ImageView) findViewById(R.id.imageView_glucometer);
-        paringGlucometer = (ImageView) findViewById(R.id.button_paring_glucometer);
-        searchGlucometer = (ImageView) findViewById(R.id.search_glucometer);
-        textGlucometer = (TextView) findViewById(R.id.text_glucometer);
-        textGlucometerName = (TextView) findViewById(R.id.glucometer_name);
+        glucometer = findViewById(R.id.imageView_glucometer);
+        searchGlucometer = findViewById(R.id.search_glucometer);
+        textGlucometer = findViewById(R.id.text_glucometer);
+        textGlucometerName = findViewById(R.id.glucometer_name);
         //Scale UI identification
-        scale = (ImageView) findViewById(R.id.imageView_scale);
-        paringScale = (ImageView) findViewById(R.id.button_paring_scale);
-        searchScale = (ImageView) findViewById(R.id.button_search_scale);
-        textScale = (TextView) findViewById(R.id.text_device_scale);
-        textScaleName = (TextView) findViewById(R.id.scale_name);
+        scale = findViewById(R.id.imageView_scale);
+        searchScale = findViewById(R.id.button_search_scale);
+        textScale = findViewById(R.id.text_device_scale);
+        textScaleName = findViewById(R.id.scale_name);
 
         this.localBroadcastManager = LocalBroadcastManager.getInstance(this);
 
@@ -85,6 +84,7 @@ public class DevicesActivity extends AppCompatActivity implements WithCollectorS
         // Load the preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -98,30 +98,25 @@ public class DevicesActivity extends AppCompatActivity implements WithCollectorS
         this.uploadBroadcastReceiver = new UploadBroadcastReceiver(this);
         IntentFilter uploadActions = uploadBroadcastReceiver.getIntentFilter();
         localBroadcastManager.registerReceiver(uploadBroadcastReceiver, uploadActions);
-
-        // register broadcast listener for settings messages
-        this.settingsBroadcastReceiver = new SettingsBroadcastReceiver(this);
-        IntentFilter settingsActions = settingsBroadcastReceiver.getIntentFilter();
-        localBroadcastManager.registerReceiver(settingsBroadcastReceiver, settingsActions);
     }
 
     @Override
     protected void onPause() {
-
         localBroadcastManager.unregisterReceiver(collectorBroadcastReceiver);
         localBroadcastManager.unregisterReceiver(uploadBroadcastReceiver);
-        localBroadcastManager.unregisterReceiver(settingsBroadcastReceiver);
-
         super.onPause();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbindService(this.collectorServiceConnection);
     }
+
     @Override
     public void listMessage(final String message) {
     }
+
     @Override
     public void setCollectorService(CollectorService collectorService) {
         this.collectorService = collectorService;
@@ -129,60 +124,58 @@ public class DevicesActivity extends AppCompatActivity implements WithCollectorS
             refreshMeasurements();
         }
     }
+
     @Override
     public void refreshMeasurements() {
     }
+
     @Override
     public void refreshMessages() {
     }
+
     @Override
     public void displayConnectionStateChange(String deviceAddress, String deviceName, boolean hasConnected) {
+        // Glucometer
+        // Device not found
+        if (Objects.equals(deviceName, "") && collectorService.getCollectionState(deviceAddress)
+                == CollectorService.Type.GLUCOSE_COLLECTION) {
+            glucometer.setImageResource(R.drawable.x_mark);
+            textGlucometer.setText(R.string.textview_deviceNotFound);
+            textGlucometerName.setText("");
+            // Device found und connected
+        } else if (hasConnected && !Objects.equals(deviceName, "") && collectorService
+                .getCollectionState(deviceAddress) == CollectorService.Type.GLUCOSE_COLLECTION) {
+            glucometer.setImageResource(R.drawable.high_connection);
+            textGlucometer.setText(R.string.textview_devicePaired);
+            textGlucometerName.setText(deviceName);
+            searchGlucometer.setVisibility(View.INVISIBLE);
+            // Device found und disconnected
+        } else if (!hasConnected && !Objects.equals(deviceName, "") && collectorService
+                .getCollectionState(deviceAddress) == CollectorService.Type.GLUCOSE_COLLECTION) {
+            glucometer.setImageResource(R.drawable.no_connection);
+            textGlucometer.setText(R.string.textview_deviceFound);
+            textGlucometerName.setText(deviceName);
+            searchGlucometer.setVisibility(View.INVISIBLE);
 
-                // Glucometer
-                // Device not found
-            if (deviceName == "" && collectorService.getCollectionState(deviceAddress) == CollectorService.Type.GLUCOSE_COLLECTION) {
-                glucometer.setImageResource(R.drawable.x_mark);
-                paringGlucometer.setVisibility(View.INVISIBLE);
-                textGlucometer.setText(R.string.textview_deviceNotFound);
-                textGlucometerName.setText("");
-                // Device found und connected
-            } else if (hasConnected && deviceName != "" && collectorService.getCollectionState(deviceAddress) == CollectorService.Type.GLUCOSE_COLLECTION) {
-                glucometer.setImageResource(R.drawable.high_connection);
-                paringGlucometer.setImageResource(R.drawable.paring);
-                paringGlucometer.setVisibility(View.VISIBLE);
-                textGlucometer.setText(R.string.textview_devicePaired);
-                textGlucometerName.setText(deviceName);
-                searchGlucometer.setVisibility(View.INVISIBLE);
-                // Device found und disconnected
-            } else if (!hasConnected && deviceName != "" && collectorService.getCollectionState(deviceAddress) == CollectorService.Type.GLUCOSE_COLLECTION) {
-                glucometer.setImageResource(R.drawable.no_connection);
-                textGlucometer.setText(R.string.textview_deviceFound);
-                textGlucometerName.setText(deviceName);
-                searchGlucometer.setVisibility(View.INVISIBLE);
-                paringGlucometer.setVisibility(View.VISIBLE);
-                paringGlucometer.setImageResource(R.drawable.unparing);
-
-                // Scale
-            } else if (deviceName == "" && collectorService.getCollectionState(deviceAddress) == CollectorService.Type.WEIGHT_COLLECTION) {
-                scale.setImageResource(R.drawable.x_mark);
-                paringScale.setVisibility(View.INVISIBLE);
-                textScale.setText(R.string.textview_deviceNotFound);
-                textScaleName.setText("");
-            } else if (hasConnected && deviceName != "" && collectorService.getCollectionState(deviceAddress) == CollectorService.Type.WEIGHT_COLLECTION) {
-                scale.setImageResource(R.drawable.high_connection);
-                paringScale.setImageResource(R.drawable.paring);
-                paringScale.setVisibility(View.VISIBLE);
-                textScale.setText(R.string.textview_devicePaired);
-                textScaleName.setText(deviceName);
-                searchScale.setVisibility(View.INVISIBLE);
-            } else if (!hasConnected && deviceName != "" && collectorService.getCollectionState(deviceAddress) == CollectorService.Type.WEIGHT_COLLECTION) {
-                scale.setImageResource(R.drawable.no_connection);
-                paringScale.setVisibility(View.VISIBLE);
-                paringScale.setImageResource(R.drawable.unparing);
-                textScale.setText(R.string.textview_deviceFound);
-                textScaleName.setText(deviceName);
-                searchScale.setVisibility(View.INVISIBLE);
-            }
+            // Scale
+        } else if (Objects.equals(deviceName, "") && collectorService.getCollectionState(deviceAddress)
+                == CollectorService.Type.WEIGHT_COLLECTION) {
+            scale.setImageResource(R.drawable.x_mark);
+            textScale.setText(R.string.textview_deviceNotFound);
+            textScaleName.setText("");
+        } else if (hasConnected && !Objects.equals(deviceName, "") && collectorService
+                .getCollectionState(deviceAddress) == CollectorService.Type.WEIGHT_COLLECTION) {
+            scale.setImageResource(R.drawable.high_connection);
+            textScale.setText(R.string.textview_devicePaired);
+            textScaleName.setText(deviceName);
+            searchScale.setVisibility(View.INVISIBLE);
+        } else if (!hasConnected && !Objects.equals(deviceName, "") && collectorService
+                .getCollectionState(deviceAddress) == CollectorService.Type.WEIGHT_COLLECTION) {
+            scale.setImageResource(R.drawable.no_connection);
+            textScale.setText(R.string.textview_deviceFound);
+            textScaleName.setText(deviceName);
+            searchScale.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void onClickSearchGlucometer(View v) {

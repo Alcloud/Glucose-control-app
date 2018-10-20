@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Credential_v.0.2.0</string>
+    <string name="app_name">Credential_v.0.9.0</string>
 
     <!-- default bluetooth names of the BLE devices -->
     <string name="pref_device_glucometer">Accu-Chek</string>
@@ -8,23 +8,27 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
     <string name="action_camera">Camera</string>
     <string name="action_doctor_details">Doctor details</string>
-    <string name="action_add_to">Add to address book</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="name_vital_weight">Weight</string>
     <string name="rangeZoom">Kg</string>
     <string name="name_vital_steps">Steps</string>
-    <string name="zoomTextView">Choose period</string>
+    <string name="zoomTextView">Choose a period</string>
     <string name="toast_zoom">There is no data. Please use your device to create a new values</string>
     <string name="vital_toolbar_name">Vital and Activity Data</string>
     <string name="zoom_weight_toolbar_name">Weight</string>
     <string name="name_diary_blood">Average Blood Sugar</string>
-    <string name="name_diary_HBA1c">HBA1c</string>
-    <string name="checkbox_new_data">notify about new data</string>
-    <string name="checkbox_contacts">registered contacts may add data without explicit authorization</string>
+    <string name="name_diary_HBA1c">HbA1c</string>
+
+    <!-- Strings related to notification settings -->
+    <string name="checkbox_new_data">there is some new data</string>
+    <string name="checkbox_contacts">doctor want to get access to your data</string>
+    <string name="checkbox_collaborations">someone gives you access to some items</string>
+    <string name="new_data_description">you will get a message, when the doctor sends a new information, documents or updates your current vital or HBA1c data.</string>
+    <string name="access_description">you will get a message, when the doctor will request access to read, write or update your specific data.</string>
+
     <string name="textview_glucometer">Glucometer</string>
     <string name="textview_ready">ready to connect</string>
     <string name="textview_connected">connected</string>
@@ -44,19 +48,49 @@
     <string name="event_toolbar">Event</string>
     <string name="error_list">No item found</string>
     <string name="paring">Paring</string>
-    <string name="search">Search</string>
-    <string name="event_list">Event list</string>
-    <string name="protocol">Protocol</string>
-    <string name="revoke_consent">Revoke consent</string>
-    <string name="devices">Devices</string>
-    <string name="recover_account">Recover account</string>
+
+    <!-- Buttons -->
+    <string name="event_list">Event list button</string>
+    <string name="protocol">Protocol button</string>
+    <string name="revoke_consent">Revoke consent button</string>
+    <string name="devices">Devices button</string>
+    <string name="recover_account">Recover account button</string>
+    <string name="action_add_to">Add to address book button</string>
+    <string name="action_settings">Settings button</string>
+    <string name="share">Share button</string>
+    <string name="login_button">Login button</string>
+    <string name="switch_button">Switch</string>
+    <string name="edit_button">Edit button</string>
+    <string name="logout_button">Logout button</string>
+    <string name="address_book_button">Address book button</string>
+    <string name="scan_button">Scan button</string>
+    <string name="search">Search button</string>
     <string name="reject">Reject</string>
     <string name="allow">Allow</string>
     <string name="add">Add</string>
     <string name="back">Back</string>
-    <string name="event_void">Create a custom ArrayAdapter,apply the object(Having two items) array to the custom adapter, and feed it to getListView.setAdapter.
-    Following Snippet will help you.</string>
-    <string name="action_address_book">Manage address book</string>
+    <string name="delete_search_button">Delete all search parameters button</string>
+    <string name="user_profile">User photo and profile details button</string>
+    <string name="edit_user_button">Edit user details button</string>
+
+    <!-- Logos -->
+    <string name="protocol_logo">protocol logo</string>
+    <string name="app_name_logo">C R E D E N T I A L</string>
+    <string name="user_logo">User logo</string>
+    <string name="password_logo">Password logo</string>
+    <string name="app_logo">App logo</string>
+    <string name="notification_logo">Notification logo</string>
+    <string name="email_logo">E-mail logo</string>
+    <string name="city_logo">City logo</string>
+    <string name="doctor_logo">Doctor logo</string>
+    <string name="settings_logo">Settings logo</string>
+    <string name="health_record_logo">My health records logo</string>
+    <string name="search_logo">Search logo</string>
+    <string name="doctor_role_logo">Doctors logo role</string>
+
+    <string name="action_set_role">Set or change doctors role</string>
+    <string name="event_void">Some information.</string>
+    <string name="action_address_book">Address book</string>
     <string name="textview_diabetologist">Diabetologist</string>
     <string name="textview_doctor">Doctor Address Book</string>
     <string name="textview_not_registered">not registered</string>
@@ -71,10 +105,11 @@
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in</string>
-    <string name="action_register">Register</string>
+    <string name="action_register">REGISTER</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_invalid_account">This account name is invalid</string>
+    <string name="error_invalid_password">This password is too short. Use eight characters at least.</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_reg_account_already_available">The account is already available</string>
     <string name="error_reg_password_incorrect">The password is too short (min 8 characters)</string>
@@ -89,11 +124,90 @@
     <string name="revoke_title">Consent revocation.</string>
     <string name="my_health_record">My Health Record</string>
     <string name="my_doctors">My Doctors</string>
-    <string name="search_participant">Search Participant</string>
+    <string name="search_participant">Search doctor</string>
     <string name="diary">Diary</string>
-    <string name="my_data">My Data</string>
+    <string name="my_data">My vital data</string>
     <string name="clinical">Clinical</string>
     <string name="diabetologist">diabetologist</string>
     <string name="family_doctor">family doctor</string>
     <string name="clear_all">Clear all</string>
+    <string name="not_registered">not registered</string>
+    <string name="no_access">no access</string>
+    <string name="city">City</string>
+    <string name="role">Role</string>
+    <string name="surname">Surname</string>
+    <string name="name">Name</string>
+    <string name="participant_photo">Doctors photo</string>
+    <string name="doctor_has_access">Doctor has access:</string>
+    <string name="date">12 october 2016</string>
+    <string name="text">Sam Smith want to add data:</string>
+    <string name="version">v.0.9.0</string>
+    <string name="participant">Participant</string>
+    <string name="post_code">Post code</string>
+    <string name="enter_post_code">Enter post code</string>
+    <string name="enter_name">Enter name</string>
+    <string name="sign_up_for_credential"><u>Or sign up</u></string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="logout">logout</string>
+    <string name="edit">edit profile</string>
+    <string name="refresh">refresh</string>
+    <string name="account">Account name</string>
+    <string name="next_page">Next page</string>
+    <string name="password">Password</string>
+    <string name="previous_page">previous page</string>
+    <string name="toolbar_registration_first">Registration step one</string>
+    <string name="toolbar_registration_second">Registration step two</string>
+    <string name="error_matching_password">Passwords do not match!</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="notification_settings">Notification settings</string>
+    <string name="logged_as">Logged in as</string>
+    <string name="sign_out">SIGN OUT</string>
+    <string name="notification_subscribed">Notify me if:</string>
+    <string name="ok">OK</string>
+    <string name="start_text">To select any option, go to the menu.
+        Swipe from left to right or press "hamburger" button to open the menu.</string>
+    <string name="time">Time</string>
+    <string name="protocol_indicator">Protocol indicator</string>
+    <string name="afgh_crypto_scheme">AFGH</string>
+    <string name="account_name">Account name or e-mail</string>
+    <string name="change_permission">Do you want to change permission settings?</string>
+    <string name="change_permission_auto">Do you want to give this doctor basic permission to read
+        or edit your documents and data? You can also do it later.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="notify_me">Notify me when:</string>
+    <string name="period_spinner">Choose period</string>
+    <string name="action_delete_role">Delete doctor role</string>
+    <string name="action_delete_participant">Delete doctor from address book</string>
+    <string name="action_access_right">Set permission</string>
+
+    <string name="role_spinner">Choose doctors role</string>
+    <string name="app_title">P A T I E N T  A P P</string>
+    <string name="city_input">City or post code input</string>
+    <string name="doctor_name_input">Doctor name or surname input</string>
+    <string name="first_name_input">User name input</string>
+    <string name="last_name_input">User surname input</string>
+    <string name="email_input">E-mail input</string>
+    <string name="account_name_input">Account name input</string>
+    <string name="first_password_input">Password input</string>
+    <string name="second_password_input">Confirm password input</string>
+    <string name="onclick_zoom">Click on this graph to zoom</string>
+    <string name="blood_sugar">Blood sugar</string>
+    <string name="hba1c">HbA1c</string>
+    <string name="weight">Weight</string>
+    <string name="settings">Settings</string>
+    <string name="configuration">Configuration</string>
+    <string name="about">About</string>
+    <string name="do_not_use">Do not use</string>
+    <string name="debug">Debug</string>
+    <string name="from">From:</string>
+    <string name="notification">Notification</string>
+    <string name="server_not_respond">Server does not respond. Please check your internet connection and try again.</string>
+    <string name="data_was_not_saved">Data was not saved. Please check your internet connection and try again.</string>
+    <string name="title_activity_hba1c_zoom">HbA1cZoom</string>
+    <string name="graphTextView">To choose a period of time, tap on the graph</string>
+    <string name="diary_toolbar_hba1c">Average HbA1c value</string>
+
 </resources>

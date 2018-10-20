@@ -5,6 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import org.json.JSONException;
+
+import java.text.ParseException;
+import java.util.concurrent.ExecutionException;
+
 /**
  * The main activity's broadcast receiver, which listens for news by the collector
  * service.
@@ -20,9 +25,6 @@ public class CollectorBroadcastReceiver extends BroadcastReceiver {
             CollectorService.ACTION_DEVICE_CONNECTED,
             CollectorService.ACTION_DEVICE_DISCONNECTED
     };
-
-    // Tag for logging purposes
-    private final String TAG = CollectorBroadcastReceiver.class.getSimpleName();
 
     // the main activity to which the data will be forwarded
     private WithCollectorService withCollectorService;
@@ -50,7 +52,11 @@ public class CollectorBroadcastReceiver extends BroadcastReceiver {
         String[] addrAndName;
         switch (action) {
             case CollectorService.ACTION_MEASUREMENT_COLLECTED:
-                withCollectorService.refreshMeasurements();
+                try {
+                    withCollectorService.refreshMeasurements();
+                } catch (ParseException | JSONException | ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
                 break;
             case CollectorService.ACTION_DEVICE_INFO_COLLECTED:
                 withCollectorService.refreshMessages();
@@ -72,13 +78,11 @@ public class CollectorBroadcastReceiver extends BroadcastReceiver {
             default:
                 break;
         }
-
     }
 
     private String[] readDeviceAddressAndName(Intent intent) {
         String deviceAddress = intent.getStringExtra(CollectorService.DEVICE_ADDRESS);
         String deviceName = intent.getStringExtra(CollectorService.DEVICE_NAME);
-        String[] result = {deviceAddress, deviceName};
-        return result;
+        return new String[]{deviceAddress, deviceName};
     }
 }

@@ -8,7 +8,7 @@ public class Person {
         this.name = name;
         this.i = i;
     }
-    private final String[] event = new String[]{"has added data.", "wants to add data.", "no event"};
+    private final String[] event = new String[]{"has added data.", "wants to add data.", "no event."};
 
     public String getName() {
         return name;

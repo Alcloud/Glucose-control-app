@@ -222,33 +222,4 @@ public class WeightMeasurement extends Measurement{
 
         return builder.toString();
     }
-    public void writeJSON(Context context){
-        JSONObject weightJson = new JSONObject();
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-        Date baseTime = getBaseTime();
-        Date receiveTime = getReceiveTime();
-        String fileNameSpace = getReceiveTime().toString();
-        String fileName = fileNameSpace.replaceAll("\\W", "");
-        String jsonBaseTime;
-        String jsonReceiveTime;
-        try {
-            //Convert Date to json with timeStamp
-            jsonBaseTime = objectMapper.writeValueAsString(baseTime);
-            jsonReceiveTime = objectMapper.writeValueAsString(receiveTime);
-
-            FileWriter file = new FileWriter(context.getFilesDir()+"/"+fileName+".json");
-            weightJson.put("deviceTime", jsonBaseTime);
-            weightJson.put("receiveTime", jsonReceiveTime);
-            weightJson.put("weight", getWeight());
-            weightJson.put("weightUnit", getWeightUnit());
-            file.write(weightJson.toString());
-            file.flush();
-            file.close();
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
